@@ -2,11 +2,10 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
-
+subtitle: <a href="https://www.ias.edu/scholars/jonah-kudler-flam">Institute for Advanced Study, Princeton</a>.  jkudlerflam@ias.edu
 profile:
   align: right
-  image: prof_pic.jpg
+  image: headshot_newest.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>555 your office number</p>
@@ -14,7 +13,7 @@ profile:
     <p>Your City, State 12345</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page
 
 announcements:
   enabled: true # includes a list of news items
