@@ -2,18 +2,18 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
+      value: Jonah Kudler-Flam
     - name: Date of Birth
-      value: 14th March 1879
+      value: April 28, 1995
     - name: Languages
-      value: English, German
+      value: English
 
 - title: Education
   type: time_table
   contents:
     - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+      institution: University of Chicago, Chicago, IL
+      year: 2022
       description:
         - Description 1.
         - Description 2.
@@ -21,12 +21,15 @@
           contents:
             - Sub-description 1.
             - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+    - title: MA
+      institution: University of Chicago, Chicago, IL
+      year: 2018
       description:
         - Description 1.
         - Description 2.
+    - title: BA
+      institution: Colgate University, Hamilton, NY
+      year: 2017
 
 - title: Experience
   type: time_table
