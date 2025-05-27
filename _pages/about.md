@@ -27,11 +27,15 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a theoretical physicist interested in quantum information theoretic aspects of quantum many-body physics, field theory, and gravity. My research explores how quantum systems evolve and become chaotic, and how these ideas connect to the physics of black holes and the structure of spacetime.
+I am a theoretical physicist studying quantum many-body systems, quantum field theory, and quantum gravity. My work leverages tools from quantum information theory to explore two closely connected questions:
 
-I am currently a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ, and an affiliated postdoctoral fellow at the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago.
+1. What is the quantum structure of spacetime, particularly in the contexts of black holes and the early universe?  
+2. How does thermal physics emerge from underlying quantum degrees of freedom and chaotic dynamics?
 
-I also teach undergraduate courses through Princeton University's Prison Teaching Initiative. 
+The surprising connection between these seemingly disparate research areas has always captivated me and continues to inspire my work. I talk about this connection in more detail on [The Postdoc Path Podcast](https://open.spotify.com/episode/05Rix9sNXoEcO8PwDhadbg) and in greater depth in my [publications](https://scholar.google.co.jp/citations?hl=en&user=Nj124O8AAAAJ).  
+If you're a student interested in theoretical physics, I’m always happy to chat—feel free to reach out to me at [jkudlerflam@ias.edu](mailto:jkudlerflam@ias.edu).
 
-If you're a student interested in theoretical physics, I’m always happy to chat—feel free to reach out to me at jkudlerflam@ias.edu.
+Currently, I am a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ. Previously, I was a postdoctoral fellow affiliated with the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago, where I worked under the guidance of Shinsei Ryu.
+
+Beyond research, I’m passionate about teaching and mentorship. Since 2023, I’ve been volunteering with Princeton University’s Prison Teaching Initiative, teaching undergraduate courses to incarcerated students across New Jersey. If you’re interested in getting involved, you can learn more [here](https://mcgraw.princeton.edu/community-college-engagement/prison-teaching-initiative)—or feel free to reach out if you'd like to hear about my experience.
 
