@@ -16,6 +16,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/publications/";
           },
+        },{id: "nav-recorded-talks",
+          title: "Recorded Talks",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/talks/";
+          },
         },{id: "nav-cv",
           title: "cv",
           description: "CV Updated 5/23/25",
@@ -51,7 +58,37 @@ ninja.data = [{
           section: "News",},{id: "news-new-paper-on-arxiv-absolute-entropy-and-the-observer-s-no-boundary-state-we-investigate-hartle-and-hawking-s-no-boundary-proposal-for-observers-in-closed-universes-finding-that-it-is-the-universal-maximum-entropy-state-which-realizes-a-recent-conjecture-of-edward-witten-huge-thanks-to-andreas-and-erez-for-the-great-collaboration",
           title: '🚨 New paper on arXiv: Absolute Entropy and the Observer’s No-Boundary State We...',
           description: "",
-          section: "News",},{
+          section: "News",},{id: "pages-page-not-found",
+          title: 'Page not found',
+          description: "Looks like there has been a mistake. Nothing exists here.",
+          section: "Pages",handler: () => {
+              window.location.href = "/404.html";
+            },},{id: "pages-about",
+          title: 'about',
+          description: "",
+          section: "Pages",handler: () => {
+              window.location.href = "/";
+            },},{id: "pages-cv",
+          title: 'cv',
+          description: "CV Updated 5/23/25",
+          section: "Pages",handler: () => {
+              window.location.href = "/cv/";
+            },},{id: "pages-news",
+          title: 'news',
+          description: "",
+          section: "Pages",handler: () => {
+              window.location.href = "/news/";
+            },},{id: "pages-publications",
+          title: 'publications',
+          description: "",
+          section: "Pages",handler: () => {
+              window.location.href = "/publications/";
+            },},{id: "pages-recorded-talks",
+          title: 'Recorded Talks',
+          description: "",
+          section: "Pages",handler: () => {
+              window.location.href = "/talks/";
+            },},{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
