@@ -27,7 +27,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 - **Date:** October 21, 2022 
 - **Event:** Institute for Advanced Study Physics Group Meeting
-- **Description:** Based on several papers ([1](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.171603), [2](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.040340), [3](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.129.061602), [4](https://link.springer.com/article/10.1007/JHEP01(2023)064), [5](https://link.springer.com/article/10.1007/JHEP08(2022)189), [6] (https://link.springer.com/article/10.1007/JHEP05(2023)078))
+- **Description:** Based on several papers ([1](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.171603), [2](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.040340), [3](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.129.061602), [4](https://link.springer.com/article/10.1007/JHEP01(2023)064), [5](https://link.springer.com/article/10.1007/JHEP08(2022)189), [6](https://link.springer.com/article/10.1007/JHEP05(2023)078))
 - [Watch here](https://www.youtube.com/watch?v=L2MJooEIrUs)
 
 ## Distinguishability in Random States, Eigenstates, and Gravity
