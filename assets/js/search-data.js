@@ -52,7 +52,10 @@ ninja.data = [{
             window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
           
         },
-      },{id: "news-hyaline-chen-a-princeton-undergraduate-physics-student-i-had-the-pleasure-of-advising-has-won-the-pacm-best-research-project-award-for-his-work-that-culminated-in-our-paper-on-fine-details-of-quantum-chaos-congratulations-hyaline",
+      },{id: "news-geoff-penington-and-i-have-been-awarded-second-prize-in-2025-gravity-research-foundation-essay-contest-for-our-paper-on-quantum-teleportation-into-black-holes-our-work-explored-the-deep-relationship-between-information-and-energy-in-quantum-black-holes",
+          title: 'Geoff Penington and I have been awarded second prize in 2025 Gravity Research...',
+          description: "",
+          section: "News",},{id: "news-hyaline-chen-a-princeton-undergraduate-physics-student-i-had-the-pleasure-of-advising-has-won-the-pacm-best-research-project-award-for-his-work-that-culminated-in-our-paper-on-fine-details-of-quantum-chaos-congratulations-hyaline",
           title: 'Hyaline Chen, a Princeton undergraduate physics student I had the pleasure of advising,...',
           description: "",
           section: "News",},{id: "news-new-paper-on-arxiv-absolute-entropy-and-the-observer-s-no-boundary-state-we-investigate-hartle-and-hawking-s-no-boundary-proposal-for-observers-in-closed-universes-finding-that-it-is-the-universal-maximum-entropy-state-which-realizes-a-recent-conjecture-of-edward-witten-huge-thanks-to-andreas-and-erez-for-the-great-collaboration",
