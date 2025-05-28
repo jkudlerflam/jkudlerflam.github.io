@@ -6,7 +6,7 @@ nav: true
 nav_order: 3
 ---
 
-Available recorded talks of mine. Slides of these talks and others (see CV) available upon request.
+Available recorded talks of mine. Slides of these talks and others (see cv) available upon request.
 
 ## Explorations of Dissipative Quantum Chaos from Non-Hermitian Random Matrix Theory
 
@@ -20,13 +20,14 @@ Available recorded talks of mine. Slides of these talks and others (see CV) avai
 
 - **Date:** April 11, 2023
 - **Event:**  Berkeley Center for Theoretical Physics string theory / HEP-QIS seminar
-- **Description:** Loosely based on [paper](https://arxiv.org/abs/2501.04773) - [Watch here](https://www.youtube.com/watch?v=8i-TSH5iVik)
+- **Description:** Loosely based on [paper](https://arxiv.org/abs/2501.04773) 
+- [Watch here](https://www.youtube.com/watch?v=8i-TSH5iVik)
 
 ## Quantum Information before the Page Time
 
 - **Date:** October 21, 2022 
 - **Event:** Institute for Advanced Study Physics Group Meeting
-- **Description:** Based on [paper](https://link.springer.com/article/10.1007/JHEP05(2023)078) 
+- **Description:** Based on several papers ([1](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.171603), [2](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.2.040340), [3](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.129.061602), [4](https://link.springer.com/article/10.1007/JHEP01(2023)064), [5](https://link.springer.com/article/10.1007/JHEP08(2022)189), [6] (https://link.springer.com/article/10.1007/JHEP05(2023)078))
 - [Watch here](https://www.youtube.com/watch?v=L2MJooEIrUs)
 
 ## Distinguishability in Random States, Eigenstates, and Gravity
@@ -56,4 +57,6 @@ Available recorded talks of mine. Slides of these talks and others (see CV) avai
 - **Event:**  Gravity, Quantum Fields & Information Virtual Seminar
 - **Description:** Based on two papers ([1](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.99.106014), [2](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.123.131603))
 - [Watch here](https://www.youtube.com/watch?v=dt_VREQYl0g)
+
+
 ---
