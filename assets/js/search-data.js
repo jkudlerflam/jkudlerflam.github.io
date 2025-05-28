@@ -17,7 +17,7 @@ ninja.data = [{
             window.location.href = "/publications/";
           },
         },{id: "nav-recorded-talks",
-          title: "Recorded Talks",
+          title: "recorded talks",
           description: "",
           section: "Navigation",
           handler: () => {
@@ -84,7 +84,7 @@ ninja.data = [{
           section: "Pages",handler: () => {
               window.location.href = "/publications/";
             },},{id: "pages-recorded-talks",
-          title: 'Recorded Talks',
+          title: 'recorded talks',
           description: "",
           section: "Pages",handler: () => {
               window.location.href = "/talks/";
