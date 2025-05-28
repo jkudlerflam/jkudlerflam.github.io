@@ -20,7 +20,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 - **Date:** April 11 & 25, 2023
 - **Events:**  Berkeley Center for Theoretical Physics string theory / HEP-QIS seminar & Purdue Particle Physics Seminar
-- **Description:** Loosely based on [(1)](https://arxiv.org/abs/2501.04773) 
+- **Description:** Loosely based on ([1](https://arxiv.org/abs/2501.04773))
 - [Watch here](https://www.youtube.com/watch?v=8i-TSH5iVik) or [here](https://www.youtube.com/watch?v=BIqp5pfAfTw)
 
 ## Quantum Information before the Page Time
@@ -48,7 +48,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 - **Date:**  June 24, 2020
 - **Event:**  Stanford TT Group Meeting
-- **Description:** Based on [(1)](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.102.045009)
+- **Description:** Based on ([1](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.102.045009))
 - [Watch here](https://stanford.zoom.us/rec/play/uMUoJeCu-js3E9CVuQSDBqMsW9TrKK-sgCcf8_QPyhmzVHUAMVWjbrVGMeUEPdaGNVjTB1uU3uJ0DkGp?continueMode=true&_x_zm_rtaid=ztHSrT6eSFSyMAlvenZjKA.1593039376311.a56c6ef73a7db6951ce924c8674e29ca&_x_zm_rhtaid=68)
 
 ## Derivation of holographic negativity in AdS3/CFT2

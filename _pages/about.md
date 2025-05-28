@@ -26,7 +26,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a theoretical physicist and currently a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ. Before that, I was a postdoctoral fellow at the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago, where I worked under the guidance of Shinsei Ryu.
+I am a theoretical physicist and currently a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ. I was previously a postdoctoral fellow at the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago, where I worked under the guidance of Shinsei Ryu.
 
 My research focuses on quantum many-body systems, quantum field theory, and quantum gravity. I use tools from quantum information theory to explore two closely connected questions:
 
