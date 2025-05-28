@@ -18,10 +18,10 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 ## Horizons as eavesdroppers, decoherence from soft radiation
 
-- **Date:** April 11, 2023
-- **Event:**  Berkeley Center for Theoretical Physics string theory / HEP-QIS seminar
+- **Date:** April 11 & 25, 2023
+- **Events:**  Berkeley Center for Theoretical Physics string theory / HEP-QIS seminar & Purdue Particle Physics Seminar
 - **Description:** Loosely based on [(1)](https://arxiv.org/abs/2501.04773) 
-- [Watch here](https://www.youtube.com/watch?v=8i-TSH5iVik)
+- [Watch here](https://www.youtube.com/watch?v=8i-TSH5iVik) or [here](https://www.youtube.com/watch?v=BIqp5pfAfTw)
 
 ## Quantum Information before the Page Time
 
