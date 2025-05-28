@@ -1,10 +1,9 @@
----
-title: "Recorded Talks"
-date: 2025-05-27
-draft: false
-menu:
-  main:
-    weight: 4
+----
+layout: page
+permalink: /talks/
+title: Recorded Talks
+nav: true
+nav_order: 4
 ---
 
 # Recorded Talks
