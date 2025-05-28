@@ -5,7 +5,7 @@ permalink: /
 subtitle: <a href="https://www.ias.edu/scholars/jonah-kudler-flam">Institute for Advanced Study, Princeton</a>
 profile:
   align: right
-  image: prof_pic.jpg
+  image: headshot_newest.jpg
   image_circular: true # crops the image to make it circular
   more_info: >
     <p>267 Bloomberg Hall</p>
