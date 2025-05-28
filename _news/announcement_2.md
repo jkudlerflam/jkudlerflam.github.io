@@ -7,6 +7,6 @@ related_posts: false
 
 🚨 New paper on arXiv: [Absolute Entropy and the Observer's No-Boundary State](https://arxiv.org/abs/2505.14771)  
 
-We investigate Hartle and Hawking's no-boundary proposal for observers in closed universes, finding that it is the universal maximum entropy state which realizes a [recent conjecture of Edward Witten](https://arxiv.org/abs/2308.03663).
+We investigate Hartle and Hawking's no-boundary proposal for observers in closed universes, finding that it is the universal maximum entropy state which realizes a [recent conjecture](https://arxiv.org/abs/2308.03663) of Edward Witten.
 
 Huge thanks to Andreas and Erez for the great collaboration!

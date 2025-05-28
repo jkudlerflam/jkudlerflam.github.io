@@ -31,7 +31,7 @@ I am a theoretical physicist studying quantum many-body systems, quantum field t
 1. What is the quantum structure of spacetime, particularly in the contexts of black holes and the early universe?  
 2. How does thermal physics emerge from underlying quantum degrees of freedom and chaotic dynamics?
 
-The surprising connection between these seemingly disparate research areas has always captivated me and continues to inspire my work. I talk about this connection in more detail on [The Postdoc Path Podcast](https://open.spotify.com/episode/05Rix9sNXoEcO8PwDhadbg) and in greater depth in my [publications](https://scholar.google.co.jp/citations?hl=en&user=Nj124O8AAAAJ).  
+The surprising connection between these seemingly disparate research areas has always captivated me and continues to inspire my work. I talk about this connection in more detail on [The Postdoc Path Podcast](https://open.spotify.com/episode/05Rix9sNXoEcO8PwDhadbg) and in much greater depth in my [publications](https://scholar.google.co.jp/citations?hl=en&user=Nj124O8AAAAJ).  
 If you're a student interested in theoretical physics, I’m always happy to chat—feel free to reach out to me at [jkudlerflam@ias.edu](mailto:jkudlerflam@ias.edu).
 
 Currently, I am a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ. Previously, I was a postdoctoral fellow affiliated with the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago, where I worked under the guidance of Shinsei Ryu.
