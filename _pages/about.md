@@ -2,17 +2,17 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href="https://www.ias.edu/scholars/jonah-kudler-flam">Institute for Advanced Study, Princeton</a>.  jkudlerflam@ias.edu
+subtitle: <a href="https://www.ias.edu/scholars/jonah-kudler-flam">Institute for Advanced Study, Princeton</a>
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>267 Bloomberg Hall</p>
+    <p>1 Einstein Drive</p>
+    <p>Princeton, NJ 08540</p>
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
+selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false # includes social icons at the bottom of the page
 
 announcements:
@@ -21,8 +21,8 @@ announcements:
   limit: 5 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
+  enabled: false
+  scrollable: false # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
 
