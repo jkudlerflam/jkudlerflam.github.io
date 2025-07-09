@@ -8,11 +8,18 @@ nav_order: 3
 
 Available recorded talks of mine. Slides of these talks and others (see cv) available upon request.
 
+## Absolute Entropy and the Observer's No-Boundary State
+
+- **Date:** June 24, 2025
+- **Event:** QIQG 2025: Quantum Information in Quantum Gravity
+- **Description:** Based on [1](https://arxiv.org/abs/2505.14771)
+- [Watch here](https://pirsa.org/25060010)
+
 ## Explorations of Dissipative Quantum Chaos from Non-Hermitian Random Matrix Theory
 
 - **Date:** May 3, 2023
 - **Event:** PCS Institute for Basic Science Seminar
-- **Description:** Based on two papers ([1](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.130.010401), [2](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.L020201))
+- **Description:** Based on ([1](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.130.010401), [2](https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.L020201))
 - [Watch here](https://www.youtube.com/watch?v=Z5JdYbX2yrU)
 
 
