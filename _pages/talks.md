@@ -12,7 +12,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 - **Date:** June 24, 2025
 - **Event:** QIQG 2025: Quantum Information in Quantum Gravity
-- **Description:** Based on [1](https://arxiv.org/abs/2505.14771)
+- **Description:** Based on ([1](https://arxiv.org/abs/2505.14771))
 - [Watch here](https://pirsa.org/25060010)
 
 ## Explorations of Dissipative Quantum Chaos from Non-Hermitian Random Matrix Theory
