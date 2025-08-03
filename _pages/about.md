@@ -28,7 +28,7 @@ latest_posts:
 
 I am a theoretical physicist and currently a Marvin L. Goldberger Member at the Institute for Advanced Study in Princeton, NJ. I was previously a postdoctoral fellow at the Princeton Center for Theoretical Science. I received my Ph.D. in Physics from the University of Chicago, where I worked under the guidance of Shinsei Ryu.
 
-My research focuses on quantum many-body systems, quantum field theory, and quantum gravity. I use tools from quantum information theory to explore two closely connected questions:
+My research focuses are broadly quantum field theory, quantum gravity, and many-body quantum chaos. I use tools from quantum information theory to explore two closely connected questions:
 
 1. What is the quantum structure of spacetime, particularly in the contexts of black holes and the early universe?  
 2. How does thermal physics emerge from underlying quantum degrees of freedom and chaotic dynamics?
