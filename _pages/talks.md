@@ -8,6 +8,13 @@ nav_order: 3
 
 Available recorded talks of mine. Slides of these talks and others (see cv) available upon request.
 
+## Emergent Mixed States for Baby Universes and Black Holes
+
+- **Date:** December 3, 2025
+- **Event:** Workshop on Quantum Aspects of Black Holes and Spacetime - Institute for Advanced Study
+- **Description:** Based on ([1](https://arxiv.org/abs/2510.06376))
+- [Watch here](https://www.youtube.com/watch?v=Gk1fE9t61Sc)
+
 ## Absolute Entropy and the Observer's No-Boundary State
 
 - **Date:** June 24, 2025
