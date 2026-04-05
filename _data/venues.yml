@@ -7,3 +7,43 @@
 
 "Vision":
   color: "#009f36"
+
+"JHEP":
+  url: https://www.springer.com/journal/13130
+  color: "#1A5276"
+
+"PRL":
+  url: https://journals.aps.org/prl/
+  color: "#C0392B"
+
+"PRD":
+  url: https://journals.aps.org/prd/
+  color: "#7D3C98"
+
+"PRB":
+  url: https://journals.aps.org/prb/
+  color: "#2E86C1"
+
+"PRX Quantum":
+  url: https://journals.aps.org/prxquantum/
+  color: "#8E44AD"
+
+"SciPost":
+  url: https://scipost.org/
+  color: "#1E8449"
+
+"PRR":
+  url: https://journals.aps.org/prresearch/
+  color: "#D4AC0D"
+
+"IJMPD":
+  url: https://www.worldscientific.com/worldscinet/ijmpd
+  color: "#CA6F1E"
+
+"AIHP D":
+  url: https://www.springer.com/journal/23
+  color: "#148F77"
+
+"JPA":
+  url: https://iopscience.iop.org/journal/1751-8121
+  color: "#A04000"
