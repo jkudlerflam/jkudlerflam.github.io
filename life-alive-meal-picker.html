@@ -1,0 +1,2061 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Life Alive Meal Picker</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: transparent; color: #1f2a24; font: 15px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif; }
+  body { padding: 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 18px 220px; }
+
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: #5d6b63; font-size: 13px; margin-bottom: 18px; }
+  .source { color: #7a8a80; font-size: 12px; margin-top: -2px; margin-bottom: 14px; }
+  a { color: #2f6a4d; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid #e2ebe5; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab { background: transparent; border: none; padding: 8px 14px; cursor: pointer; font: inherit; color: #5d6b63; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab.active { color: #1f2a24; border-bottom-color: #3b8964; font-weight: 600; }
+  .tab .count { display: inline-block; min-width: 18px; padding: 0 6px; margin-left: 6px; background: #eaf3ee; color: #2f6a4d; border-radius: 999px; font-size: 11px; font-weight: 600; }
+
+  .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filter { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid #d9e4dd; border-radius: 999px; background: #fff; font-size: 13px; color: #2f3a34; cursor: pointer; }
+  .filter input { accent-color: #3b8964; }
+  .btn { border: 1px solid #d9e4dd; background: #fff; padding: 7px 12px; border-radius: 8px; font: inherit; cursor: pointer; color: #1f2a24; }
+  .btn.primary { background: #2f6a4d; color: #fff; border-color: #2f6a4d; }
+  .btn.primary:hover { background: #265a40; }
+  .btn:hover { background: #f3f8f5; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+  .card { background: #fff; border: 1px solid #e2ebe5; border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; display: flex; flex-direction: column; }
+  .card.selected { border-color: #3b8964; box-shadow: 0 0 0 3px rgba(59,137,100,0.12); }
+  .card-img-wrap { position: relative; width: 100%; aspect-ratio: 4/3; background: #f3f8f5; overflow: hidden; }
+  .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-img-wrap .badges { position: absolute; top: 8px; right: 8px; flex-direction: row-reverse; }
+  .card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card-head { display: flex; align-items: flex-start; gap: 8px; }
+  .card-title { font-size: 15px; font-weight: 600; margin: 0; flex: 1; line-height: 1.25; }
+  .badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge.ai { background: #e6f3ec; color: #2f6a4d; }
+  .badge.gf { background: #fff3df; color: #8a5d18; }
+  .badge.vg { background: #f1ecfb; color: #5a3e9a; }
+  .card-img-wrap .badge { backdrop-filter: blur(6px); background: rgba(255,255,255,0.85); }
+  .card-img-wrap .badge.ai { background: rgba(230,243,236,0.95); }
+  .desc { color: #5d6b63; font-size: 12.5px; margin: 0; }
+  .macros { display: flex; gap: 6px; flex-wrap: wrap; }
+  .macro { background: #f3f8f5; padding: 3px 8px; border-radius: 6px; font-size: 11.5px; color: #2f3a34; }
+  .macro b { color: #1f2a24; font-weight: 600; }
+  .ingredients { font-size: 11.5px; color: #7a8a80; line-height: 1.45; max-height: 0; overflow: hidden; transition: max-height .2s ease; }
+  .card.show-ing .ingredients { max-height: 200px; }
+  .toggle-ing { background: none; border: none; color: #3b8964; font-size: 11.5px; padding: 0; cursor: pointer; text-align: left; align-self: flex-start; }
+  .recipe { font-size: 12.5px; color: #2f3a34; line-height: 1.55; max-height: 0; overflow: hidden; transition: max-height .25s ease; background: #f7faf8; border: 1px solid #e8efe9; border-radius: 8px; }
+  .recipe-inner { padding: 0; }
+  .card.show-rec .recipe { max-height: 1400px; }
+  .card.show-rec .recipe-inner { padding: 10px 12px; }
+  .recipe ol { margin: 0; padding-left: 22px; }
+  .recipe ol li { margin-bottom: 6px; }
+  .toggle-rec { background: none; border: none; color: #3b8964; font-size: 11.5px; padding: 0; cursor: pointer; text-align: left; align-self: flex-start; font-weight: 600; }
+
+  .mealprep { font-size: 12.5px; color: #3a3328; line-height: 1.55; max-height: 0; overflow: hidden; transition: max-height .25s ease; background: #fff8e6; border: 1px solid #f1e7c4; border-radius: 8px; }
+  .mealprep-inner { padding: 0; }
+  .card.show-prep .mealprep { max-height: 1600px; }
+  .card.show-prep .mealprep-inner { padding: 10px 12px; }
+  .mealprep h4 { margin: 6px 0 2px; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #8a6b1a; font-weight: 700; }
+  .mealprep h4:first-child { margin-top: 0; }
+  .mealprep ul { margin: 0 0 4px; padding-left: 22px; }
+  .mealprep ul li { margin-bottom: 4px; }
+  .mealprep .keeps { font-weight: 600; color: #8a6b1a; }
+  .mealprep .assemble { margin: 6px 0 0; font-style: italic; color: #4a4036; }
+  .toggle-prep { background: none; border: none; color: #b07a00; font-size: 11.5px; padding: 0; cursor: pointer; text-align: left; align-self: flex-start; font-weight: 600; }
+  .servings { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 8px; border-top: 1px solid #f0f4f1; }
+  .servings-label { font-size: 12px; color: #5d6b63; flex: 1; }
+  .stepper { display: inline-flex; align-items: center; border: 1px solid #d9e4dd; border-radius: 8px; overflow: hidden; }
+  .stepper button { background: transparent; border: none; width: 28px; height: 28px; font-size: 16px; cursor: pointer; color: #1f2a24; }
+  .stepper button:hover { background: #f3f8f5; }
+  .stepper .qty { min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; }
+
+  .panel { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #e2ebe5; box-shadow: 0 -4px 18px rgba(0,0,0,0.04); z-index: 5; }
+  .panel-inner { max-width: 1180px; margin: 0 auto; padding: 12px 18px; }
+  .panel-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .panel-head h2 { margin: 0; font-size: 14px; }
+  .summary { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+  .summary .macro { background: #f3f8f5; font-size: 11.5px; }
+  .panel-actions { display: flex; gap: 8px; }
+
+  .panel-body { display: none; max-height: 50vh; overflow-y: auto; padding-top: 10px; }
+  .panel.open .panel-body { display: block; }
+  .panel.open .panel-head h2::after { content: " ▾"; }
+  .panel-head h2::after { content: " ▸"; color: #7a8a80; }
+  .panel-head .titlebtn { background: none; border: none; padding: 0; font: inherit; cursor: pointer; color: inherit; }
+
+  .shopping-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .shopping-cat { background: #f7faf8; border: 1px solid #e8efe9; border-radius: 10px; padding: 10px 12px; }
+  .shopping-cat h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: #4a655a; margin: 0 0 6px; }
+  .shopping-cat ul { list-style: none; margin: 0; padding: 0; }
+  .shopping-cat li { font-size: 13px; padding: 2px 0; display: flex; justify-content: space-between; gap: 8px; }
+  .shopping-cat li .qty { color: #2f6a4d; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .empty { color: #7a8a80; font-style: italic; padding: 8px 0; }
+  .status { font-size: 12px; color: #5d6b63; min-height: 16px; }
+  .status.ok { color: #2f6a4d; }
+  .status.err { color: #a83232; }
+
+  /* Password gate */
+  body.locked .wrap, body.locked .panel { display: none !important; }
+  #auth-gate { position: fixed; inset: 0; background: linear-gradient(135deg, #f3f8f5 0%, #e6f3ec 100%); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+  .auth-card { background: #fff; padding: 32px 28px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); text-align: center; max-width: 320px; width: 100%; }
+  .auth-emoji { font-size: 40px; margin-bottom: 4px; }
+  .auth-card h2 { margin: 0 0 4px; font-size: 20px; color: #1f2a24; }
+  .auth-card p { margin: 0 0 16px; color: #5d6b63; font-size: 13px; }
+  #auth-form { display: flex; flex-direction: column; gap: 10px; }
+  #auth-input { padding: 10px 12px; border: 1px solid #d9e4dd; border-radius: 8px; font-size: 14px; font-family: inherit; }
+  #auth-input:focus { outline: none; border-color: #3b8964; }
+  #auth-form button { padding: 10px; background: #2f6a4d; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  #auth-form button:hover { background: #265a40; }
+  .auth-error { color: #a83232; font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div id="auth-gate" hidden>
+  <div class="auth-card">
+    <div class="auth-emoji">🥗</div>
+    <h2>Meal Picker</h2>
+    <p>Enter the password to continue.</p>
+    <form id="auth-form" autocomplete="off">
+      <input type="password" id="auth-input" placeholder="Password" autocomplete="current-password" autofocus />
+      <button type="submit">Unlock</button>
+    </form>
+    <div id="auth-error" class="auth-error" hidden>Wrong password</div>
+  </div>
+</div>
+<div class="wrap">
+  <h1>Life Alive Meal Picker</h1>
+  <p class="sub">Pick items, set servings, and get a consolidated shopping list. Macros are estimates per serving; <span style="color:#2f6a4d;font-weight:600;">🌿 = anti-inflammatory</span> based on whole-food, low-refined-sugar/oil composition.</p>
+  <p class="source">Menus from <a href="https://www.lifealive.com/menu" target="_blank" rel="noopener">Life Alive</a> + <a href="https://order.cloverfoodlab.com/order" target="_blank" rel="noopener">Clover Food Lab</a>. <b>Email to Jonah</b> opens your mail client pre-addressed with the shopping list. <b>Share link</b> sends just a URL with current selections.</p>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="controls">
+    <label class="filter"><input type="checkbox" id="ai-only" /> Show anti-inflammatory only</label>
+    <button class="btn" id="clear-btn">Clear selections</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="panel" id="panel">
+  <div class="panel-inner">
+    <div class="panel-head">
+      <button class="titlebtn" id="panel-toggle"><h2 id="panel-title">Shopping list (0 items)</h2></button>
+      <div class="summary" id="summary"></div>
+      <div class="panel-actions">
+        <button class="btn" id="share-btn" title="Copy a link with your current selections — paste it to your wife or anyone">Share link</button>
+        <button class="btn" id="copy-btn">Copy list</button>
+        <button class="btn primary" id="email-btn">Email to Jonah</button>
+        <button class="btn primary" id="export-btn" title="Fires the 'Append to Groceries' Apple Shortcut on your Mac (one-time install required)">Send to Groceries (Shortcut)</button>
+      </div>
+    </div>
+    <div class="status" id="status"></div>
+    <div class="panel-body" id="panel-body">
+      <div class="shopping-cats" id="shopping-cats"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Password gate ----------
+   Client-side SHA-256 check. Not real authentication — anyone who downloads the
+   page can attempt to crack the hash. Adequate for keeping bots + casual visitors
+   out of a couple's meal picker. Swap the hash to rotate the password.
+*/
+const AUTH_HASH = "7aa5eb472a5562e3b021b5421bfaff3c23eff0b2b38d49246bafde16d637e789";
+const AUTH_KEY = "lifeAliveMealPicker:auth:v1";
+
+async function sha256Hex(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function unlockUI() {
+  document.body.classList.remove("locked");
+  const g = document.getElementById("auth-gate");
+  if (g) g.hidden = true;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem(AUTH_KEY) === "1") {
+    unlockUI();
+    return;
+  }
+  document.body.classList.add("locked");
+  const gate = document.getElementById("auth-gate");
+  if (gate) gate.hidden = false;
+  const form = document.getElementById("auth-form");
+  const input = document.getElementById("auth-input");
+  const err = document.getElementById("auth-error");
+  if (input) input.focus();
+  if (form) form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.hidden = true;
+    const h = await sha256Hex(input.value);
+    if (h === AUTH_HASH) {
+      localStorage.setItem(AUTH_KEY, "1");
+      unlockUI();
+    } else {
+      err.hidden = false;
+      input.select();
+    }
+  });
+});
+
+/* ---------- Recipe data ----------
+   Per-serving estimates for home cooking. Quantities scale linearly with servings.
+   Categories used in shopping list grouping: produce | protein | grain | dairy | pantry
+*/
+const RECIPES = [
+  // ===== WARM GRAIN BOWLS =====
+  { section: "Grain Bowls", id: "miso-eggplant", name: "Miso Eggplant & Crispy Rice",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/58b5f59bd2/miso-eggplant-crispy-rice-grain-bowl.jpg/m/420x420",
+    desc: "Caramelized miso eggplant, crispy rice, sticky sesame tofu, shiitake & oyster mushrooms, broccoli, scallions, brown rice, sesame-ginger sauce.",
+    ai: true, vg: true, gf: true, kcal: 720, p: 24, c: 95, f: 28,
+    ing: [
+      ["Eggplant","produce",1,"medium"],
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Firm tofu","protein",4,"oz"],
+      ["Shiitake mushrooms","produce",1,"cup"],
+      ["Oyster mushrooms","produce",0.5,"cup"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Scallions","produce",1,"stalk"],
+      ["White miso paste","pantry",1,"tbsp"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",1,"clove"],
+      ["Sesame seeds","pantry",1,"tsp"],
+      ["Maple syrup","pantry",1,"tsp"],
+      ["Rice vinegar","pantry",1,"tsp"],
+    ]},
+  { section: "Grain Bowls", id: "golden-glow", name: "Golden Glow",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/f559eb95c0/golden-buddha.jpg/m/420x420",
+    desc: "Slow-roasted white sweet potato, carrots & cauliflower, mushrooms, broccoli, beets, kale, crispy chickpeas, seeds, fresh herbs, rice + quinoa, golden tahini.",
+    ai: true, vg: true, gf: true, kcal: 640, p: 18, c: 90, f: 25,
+    ing: [
+      ["White sweet potato","produce",0.5,"medium"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Cauliflower florets","produce",0.75,"cup"],
+      ["Cremini mushrooms","produce",0.5,"cup"],
+      ["Broccoli florets","produce",0.75,"cup"],
+      ["Beets","produce",0.5,"medium"],
+      ["Kale","produce",1.5,"cup"],
+      ["Chickpeas (cooked)","protein",0.5,"cup"],
+      ["Sunflower seeds","pantry",1,"tbsp"],
+      ["Pumpkin seeds","pantry",1,"tbsp"],
+      ["Fresh parsley","produce",1,"tbsp"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Quinoa (dry)","grain",0.15,"cup"],
+      ["Tahini","pantry",1.5,"tbsp"],
+      ["Turmeric (ground)","pantry",0.5,"tsp"],
+      ["Lemon","produce",0.25,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+  { section: "Grain Bowls", id: "bibimbap", name: "Chili Garlic Mushroom Bibimbap",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/3ae0d6587e/chili-garlic-mushroom-bibimbap.jpg/m/420x420",
+    desc: "Sticky sesame tofu, chili-garlic mushrooms, caramelized onions, broccoli, beets, carrots, kale, kimchi, rice + quinoa, gochujang, topped with a fried egg.",
+    ai: true, gf: true, kcal: 700, p: 30, c: 85, f: 26,
+    ing: [
+      ["Firm tofu","protein",4,"oz"],
+      ["Cremini mushrooms","produce",1,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Broccoli florets","produce",0.75,"cup"],
+      ["Beets","produce",0.5,"medium"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Kale","produce",1.5,"cup"],
+      ["Kimchi","pantry",0.33,"cup"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Quinoa (dry)","grain",0.15,"cup"],
+      ["Eggs","protein",1,"whole"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",2,"clove"],
+      ["Gochujang","pantry",1,"tbsp"],
+      ["Sesame seeds","pantry",1,"tsp"],
+      ["Scallions","produce",1,"stalk"],
+    ]},
+  { section: "Grain Bowls", id: "shawarma-bowl", name: "Roasted Mushroom Shawarma",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/b2d30cc379/roasted-mushroom-shawarma.jpg/m/420x420",
+    desc: "Mushroom shawarma, caramelized onions, hummus, black lentils & brown rice, roasted cauliflower, mediterranean salad, chickpeas, herbs, harissa zhoug, lemon tahini, whole-grain pita.",
+    ai: true, vg: true, kcal: 780, p: 25, c: 105, f: 28,
+    ing: [
+      ["Cremini mushrooms","produce",1.5,"cup"],
+      ["Yellow onion","produce",0.5,"medium"],
+      ["Hummus","pantry",0.33,"cup"],
+      ["Black lentils (cooked)","protein",0.5,"cup"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Cauliflower florets","produce",0.75,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Chickpeas (cooked)","protein",0.5,"cup"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Fresh mint","produce",1,"tbsp"],
+      ["Harissa paste","pantry",1,"tbsp"],
+      ["Tahini","pantry",1,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Cumin (ground)","pantry",1,"tsp"],
+      ["Smoked paprika","pantry",1,"tsp"],
+      ["Garlic","produce",2,"clove"],
+    ]},
+  { section: "Grain Bowls", id: "corn-fritters", name: "Roasted Corn Fritters with Black Beans",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/f9b2506ad6/roasted-corn-fritters.jpg/m/420x420",
+    desc: "Corn & zucchini fritters, black beans, avocado, tomato, sweet corn, feta, baby lettuces & romaine, brown rice, cumin lime vinaigrette.",
+    ai: false, gf: true, kcal: 720, p: 18, c: 75, f: 38,
+    ing: [
+      ["Sweet corn kernels","produce",1,"cup"],
+      ["Zucchini","produce",0.5,"medium"],
+      ["Black beans (cooked)","protein",0.75,"cup"],
+      ["Avocado","produce",0.5,"whole"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Feta cheese","dairy",1,"oz"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Brown rice (dry)","grain",0.25,"cup"],
+      ["Lime","produce",0.5,"whole"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Eggs","protein",1,"whole"],
+      ["Fresh cilantro","produce",1,"tbsp"],
+    ]},
+  { section: "Grain Bowls", id: "buddha", name: "Buddha Bowl",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/41d37de07e/buddha-bowl.jpg/m/420x420",
+    desc: "Avocado, beets, kale, shiitake & oyster mushrooms, purple cabbage, jalapeño, pumpkin & sunflower seeds, herbs, rice + quinoa, ginger-tamari.",
+    ai: true, vg: true, gf: true, kcal: 600, p: 18, c: 85, f: 22,
+    ing: [
+      ["Avocado","produce",0.5,"whole"],
+      ["Beets","produce",0.5,"medium"],
+      ["Kale","produce",1.5,"cup"],
+      ["Shiitake mushrooms","produce",0.5,"cup"],
+      ["Oyster mushrooms","produce",0.5,"cup"],
+      ["Purple cabbage","produce",0.5,"cup"],
+      ["Jalapeño","produce",0.25,"whole"],
+      ["Pumpkin seeds","pantry",1,"tbsp"],
+      ["Sunflower seeds","pantry",1,"tbsp"],
+      ["Fresh cilantro","produce",1,"tbsp"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Quinoa (dry)","grain",0.15,"cup"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",1,"clove"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Lemon","produce",0.25,"whole"],
+    ]},
+  { section: "Grain Bowls", id: "green-goddess", name: "Green Goddess",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/f4b4d9e703/green-goddess.jpg/m/420x420",
+    desc: "Avocado, broccoli & kale with tofu over lemon-garlic brown rice and ginger-tamari sauce.",
+    ai: true, vg: true, gf: true, kcal: 520, p: 22, c: 60, f: 22,
+    ing: [
+      ["Avocado","produce",0.5,"whole"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Kale","produce",2,"cup"],
+      ["Firm tofu","protein",4,"oz"],
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Garlic","produce",2,"clove"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Olive oil","pantry",1,"tbsp"],
+    ]},
+  { section: "Grain Bowls", id: "teriyaki-tofu", name: "Teriyaki Tofu",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/418b62420b/teriyaki-tofu.jpg/m/420x420",
+    desc: "Sticky sesame tofu, broccoli, chili-garlic mushrooms, caramelized onions, carrots, black sesame, scallions, brown rice, teriyaki sauce.",
+    ai: false, vg: true, gf: true, kcal: 640, p: 24, c: 88, f: 18,
+    ing: [
+      ["Firm tofu","protein",5,"oz"],
+      ["Broccoli florets","produce",1.5,"cup"],
+      ["Cremini mushrooms","produce",1,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Carrots","produce",1,"medium"],
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Tamari","pantry",2,"tbsp"],
+      ["Maple syrup","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Black sesame seeds","pantry",1,"tsp"],
+      ["Scallions","produce",1,"stalk"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",2,"clove"],
+      ["Rice vinegar","pantry",1,"tsp"],
+    ]},
+  { section: "Grain Bowls", id: "rainbow-harvest", name: "Rainbow Harvest",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/b6f284c30d/rainbow-harvest.jpg/m/420x420",
+    desc: "Whipped sweet potato, beets, carrots, broccoli, kale, tofu & brown rice with ginger-tamari sauce.",
+    ai: true, vg: true, gf: true, kcal: 560, p: 20, c: 80, f: 16,
+    ing: [
+      ["Sweet potato","produce",0.75,"medium"],
+      ["Beets","produce",0.5,"medium"],
+      ["Carrots","produce",1,"medium"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Kale","produce",2,"cup"],
+      ["Firm tofu","protein",4,"oz"],
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",1,"clove"],
+      ["Olive oil","pantry",1,"tbsp"],
+    ]},
+  { section: "Grain Bowls", id: "adventurer", name: "Adventurer",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/8493d94ae5/adventurer.jpg/m/420x420",
+    desc: "Beets, broccoli, kale, sweet corn, tofu and tamari almonds with quinoa & brown rice, white cheddar, sesame ginger-tamari.",
+    ai: true, gf: true, kcal: 720, p: 28, c: 88, f: 28,
+    ing: [
+      ["Beets","produce",0.5,"medium"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Kale","produce",1.5,"cup"],
+      ["Sweet corn kernels","produce",0.5,"cup"],
+      ["Firm tofu","protein",4,"oz"],
+      ["Almonds","protein",1,"oz"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Quinoa (dry)","grain",0.15,"cup"],
+      ["White cheddar","dairy",1,"oz"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+
+  // ===== SALADS =====
+  { section: "Salads", id: "caesar-salad", name: "L.A. Caesar Salad",
+    img: "https://a-us.storyblok.com/f/1016187/1248x1248/dd7f3eb70e/la-caesar-salad.jpg/m/420x420",
+    desc: "Kale and romaine hearts with whole-grain croutons, chickpea parmesan, caesar dressing.",
+    ai: false, kcal: 460, p: 14, c: 28, f: 32,
+    ing: [
+      ["Kale","produce",2,"cup"],
+      ["Romaine hearts","produce",2,"cup"],
+      ["Whole-grain croutons","grain",0.5,"cup"],
+      ["Chickpeas (cooked)","protein",0.33,"cup"],
+      ["Olive oil","pantry",2,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Dijon mustard","pantry",1,"tsp"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+  { section: "Salads", id: "chili-sesame-crunch", name: "Chili Sesame Crunch",
+    img: "https://a-us.storyblok.com/f/1016187/1248x1248/bedc9f08d8/chili-sesame-crunch-salad.jpg/m/420x420",
+    desc: "Chili-garlic mushrooms, caramelized onions, crispy rice, cucumber, red pepper, shaved vegetables on greens.",
+    ai: false, vg: true, kcal: 520, p: 14, c: 55, f: 26,
+    ing: [
+      ["Cremini mushrooms","produce",1,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Brown rice (dry)","grain",0.2,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Red bell pepper","produce",0.5,"medium"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Gochujang","pantry",1,"tsp"],
+      ["Garlic","produce",2,"clove"],
+      ["Sesame seeds","pantry",1,"tsp"],
+      ["Fresh cilantro","produce",1,"tbsp"],
+    ]},
+  { section: "Salads", id: "mighty-greens", name: "Mighty Greens",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/1f9fd74102/mighty-greens.jpg/m/420x420",
+    desc: "Warm spinach-feta fritters, marinated white beans & edamame, broccoli, baby lettuces, romaine.",
+    ai: false, kcal: 580, p: 24, c: 42, f: 32,
+    ing: [
+      ["Spinach","produce",2,"cup"],
+      ["Feta cheese","dairy",1,"oz"],
+      ["Eggs","protein",1,"whole"],
+      ["White beans (cooked)","protein",0.5,"cup"],
+      ["Edamame (shelled)","protein",0.5,"cup"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+  { section: "Salads", id: "mediterranean", name: "Market Mediterranean",
+    img: "https://a-us.storyblok.com/f/1016187/1248x1248/25cca596de/market-mediterranean.png/m/420x420",
+    desc: "Crispy baked falafel, hummus, marinated & crispy chickpeas, cucumber, tomato, feta, kalamata olives over greens.",
+    ai: true, kcal: 640, p: 20, c: 55, f: 38,
+    ing: [
+      ["Chickpeas (cooked)","protein",0.75,"cup"],
+      ["Hummus","pantry",0.33,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Cherry tomatoes","produce",1,"cup"],
+      ["Feta cheese","dairy",1,"oz"],
+      ["Kalamata olives","pantry",1,"oz"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Garlic","produce",1,"clove"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+    ]},
+  { section: "Salads", id: "avocado-greens", name: "Avocado Greens",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/2b7bbc0805/avocado-greens.jpg/m/420x420",
+    desc: "Everything-encrusted avocado, cucumber, sweet corn, pickled onion, kalamata olives, crispy chickpeas.",
+    ai: true, vg: true, kcal: 520, p: 14, c: 38, f: 34,
+    ing: [
+      ["Avocado","produce",1,"whole"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Sweet corn kernels","produce",0.5,"cup"],
+      ["Pickled red onion","pantry",2,"tbsp"],
+      ["Kalamata olives","pantry",1,"oz"],
+      ["Chickpeas (cooked)","protein",0.5,"cup"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Garlic","produce",1,"clove"],
+      ["Sesame seeds","pantry",1,"tsp"],
+    ]},
+  { section: "Salads", id: "cobb", name: "Farmhouse Cobb",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/7ee018e4f7/farmhouse-cobb.jpg/m/420x420",
+    desc: "Avocado, hard-boiled egg, smoked blue cheese, tomato, sweet corn, shaved vegetables, romaine, almonds.",
+    ai: false, kcal: 620, p: 28, c: 25, f: 44,
+    ing: [
+      ["Avocado","produce",0.5,"whole"],
+      ["Eggs","protein",2,"whole"],
+      ["Blue cheese","dairy",1,"oz"],
+      ["Cherry tomatoes","produce",1,"cup"],
+      ["Sweet corn kernels","produce",0.5,"cup"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Romaine hearts","produce",2,"cup"],
+      ["Almonds","protein",1,"oz"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Apple cider vinegar","pantry",1,"tsp"],
+      ["Lemon","produce",0.25,"whole"],
+      ["Dijon mustard","pantry",1,"tsp"],
+    ]},
+  { section: "Salads", id: "mexicali", name: "Mexicali Tostada",
+    img: "https://a-us.storyblok.com/f/1016187/624x624/7f0a30eddd/mexicali-tostada.jpg/m/420x420",
+    desc: "Avocado, lentil taco crumble, black beans, sweet corn, tomato, shaved vegetables, baby lettuces, romaine.",
+    ai: true, vg: true, gf: true, kcal: 560, p: 18, c: 60, f: 28,
+    ing: [
+      ["Avocado","produce",0.5,"whole"],
+      ["Brown lentils (cooked)","protein",0.5,"cup"],
+      ["Black beans (cooked)","protein",0.5,"cup"],
+      ["Sweet corn kernels","produce",0.5,"cup"],
+      ["Cherry tomatoes","produce",0.75,"cup"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Lime","produce",0.5,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+      ["Smoked paprika","pantry",0.5,"tsp"],
+      ["Fresh cilantro","produce",1,"tbsp"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+
+  // ===== HANDHELDS / WRAPS =====
+  { section: "Wraps", id: "caesar-wrap", name: "L.A. Caesar Wrap",
+    img: "https://a-us.storyblok.com/f/1016187/1248x1248/b88150d5f9/l-a-caesar-wrap.jpg/m/420x420",
+    desc: "Kale and romaine hearts with whole-grain croutons, chickpea parmesan, caesar dressing in a whole-wheat tortilla.",
+    ai: false, kcal: 540, p: 16, c: 48, f: 32,
+    ing: [
+      ["Kale","produce",1.5,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Whole-grain croutons","grain",0.25,"cup"],
+      ["Chickpeas (cooked)","protein",0.25,"cup"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Dijon mustard","pantry",1,"tsp"],
+      ["Garlic","produce",1,"clove"],
+      ["Whole-wheat tortilla","grain",1,"whole"],
+    ]},
+  { section: "Wraps", id: "falafel-pita", name: "Crispy Falafel Pita",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/ce172eb760/crispy-falafel-pita.jpg/m/420x420",
+    desc: "Crispy baked falafel with hummus, tahini slaw, mediterranean salad, fresh herbs, harissa zhoug & lemon tahini.",
+    ai: true, vg: true, kcal: 620, p: 20, c: 78, f: 24,
+    ing: [
+      ["Chickpeas (cooked)","protein",1,"cup"],
+      ["Hummus","pantry",0.25,"cup"],
+      ["Purple cabbage","produce",0.5,"cup"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Fresh mint","produce",1,"tbsp"],
+      ["Harissa paste","pantry",1,"tbsp"],
+      ["Tahini","pantry",1,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+      ["Garlic","produce",2,"clove"],
+    ]},
+  { section: "Wraps", id: "shawarma-pita", name: "Mushroom Shawarma Pita",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/605ff34b7a/mushroom-shwarma-pita.jpg/m/420x420",
+    desc: "Roasted mushroom shawarma with caramelized onions, hummus, mediterranean salad, shaved vegetables, fresh herbs.",
+    ai: true, vg: true, kcal: 560, p: 16, c: 72, f: 22,
+    ing: [
+      ["Cremini mushrooms","produce",1.5,"cup"],
+      ["Yellow onion","produce",0.5,"medium"],
+      ["Hummus","pantry",0.25,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Carrots","produce",0.25,"medium"],
+      ["Fresh parsley","produce",1,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Cumin (ground)","pantry",1,"tsp"],
+      ["Smoked paprika","pantry",0.5,"tsp"],
+      ["Garlic","produce",2,"clove"],
+    ]},
+  { section: "Wraps", id: "rainbow-nori", name: "Rainbow Nori",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/361bc1cc95/rainbow-nori-wrap.jpg/m/420x420",
+    desc: "Nori rolled with avocado, chili-garlic mushrooms, caramelized onions, cucumber, shaved vegetables, rice.",
+    ai: true, vg: true, kcal: 580, p: 18, c: 78, f: 22,
+    ing: [
+      ["Nori sheets","grain",2,"sheet"],
+      ["Avocado","produce",0.5,"whole"],
+      ["Cremini mushrooms","produce",1,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Purple cabbage","produce",0.5,"cup"],
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Tamari","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",2,"clove"],
+      ["Sesame seeds","pantry",1,"tsp"],
+    ]},
+  { section: "Wraps", id: "teriyaki-wrap", name: "Teriyaki Wrap",
+    img: "https://a-us.storyblok.com/f/1016187/840x840/2b0c595aa5/teriyaki-shiitake-wrap.jpg/m/420x420",
+    desc: "Sticky sesame tofu, broccoli, chili-garlic mushrooms, caramelized onions, carrots, black sesame in a whole-wheat tortilla.",
+    ai: false, vg: true, kcal: 680, p: 24, c: 92, f: 22,
+    ing: [
+      ["Firm tofu","protein",4,"oz"],
+      ["Broccoli florets","produce",1,"cup"],
+      ["Cremini mushrooms","produce",0.75,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Carrots","produce",0.5,"medium"],
+      ["Brown rice (dry)","grain",0.25,"cup"],
+      ["Tamari","pantry",1.5,"tbsp"],
+      ["Maple syrup","pantry",1,"tbsp"],
+      ["Sesame oil","pantry",1,"tsp"],
+      ["Black sesame seeds","pantry",1,"tsp"],
+      ["Fresh ginger","produce",1,"tbsp grated"],
+      ["Garlic","produce",2,"clove"],
+      ["Whole-wheat tortilla","grain",1,"whole"],
+      ["Rice vinegar","pantry",1,"tsp"],
+    ]},
+
+  // ===== CLOVER SANDWICHES (pita-based, from Clover Food Lab) =====
+  { section: "Clover Sandwiches", id: "clover-chickpea-fritter", name: "Chickpea Fritter",
+    img: "https://clover.imgix.net/cropped_item_photos/1518471510_XXX-crop.png?w=420&h=420&fit=crop",
+    desc: "Clover's iconic falafel pita: spiced chickpea fritters with tahini, pickled onion, herbs, lettuce and tomato in a fresh-baked pita.",
+    ai: true, vg: true, kcal: 560, p: 18, c: 70, f: 22,
+    ing: [
+      ["Chickpeas (cooked)","protein",0.75,"cup"],
+      ["Yellow onion","produce",0.25,"medium"],
+      ["Garlic","produce",2,"clove"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Fresh cilantro","produce",1,"tbsp"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+      ["Ground coriander","pantry",0.5,"tsp"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Pickled red onion","pantry",1,"tbsp"],
+      ["Tahini","pantry",1.5,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-mushroom-popper", name: "The Mushroom Popper",
+    img: "https://clover.imgix.net/cropped_item_photos/1521222556_XXX-crop.png?w=420&h=420&fit=crop",
+    desc: "Crispy fried cremini mushrooms glazed with honey-sriracha, with lettuce and ribbons of jalapeño in pita.",
+    ai: false, kcal: 600, p: 14, c: 76, f: 24,
+    ing: [
+      ["Cremini mushrooms","produce",1.5,"cup"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Jalapeño","produce",0.25,"whole"],
+      ["Pickled red onion","pantry",1,"tbsp"],
+      ["Honey","pantry",1,"tbsp"],
+      ["Sriracha","pantry",1,"tsp"],
+      ["Tamari","pantry",1,"tsp"],
+      ["Cornstarch","pantry",2,"tbsp"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Garlic","produce",1,"clove"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-crispy-chicken", name: "Classic Crispy Chicken (Plant-Based)",
+    img: "https://clover.imgix.net/cropped_item_photos/1717779974_Tender_Chicken_SandwichCROPPED.jpg?w=420&h=420&fit=crop",
+    desc: "Plant-based crispy chicken patty with special sauce, lettuce, tomato and pickles on a fresh pita.",
+    ai: false, kcal: 620, p: 22, c: 60, f: 30,
+    ing: [
+      ["Plant-based chicken patty","protein",4,"oz"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Dill pickles","pantry",4,"slice"],
+      ["Mayonnaise","pantry",1,"tbsp"],
+      ["Dijon mustard","pantry",1,"tsp"],
+      ["Olive oil","pantry",1,"tbsp"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-romesco-feta", name: "Spring Romesco Feta",
+    img: "https://clover.imgix.net/cropped_item_photos/1777401747_SpringRomescoSandwichCropped.jpg?w=420&h=420&fit=crop",
+    desc: "Spanish-inspired pita with romesco (roasted red pepper + almond), feta, fresh herbs and cucumber.",
+    ai: true, kcal: 540, p: 16, c: 52, f: 28,
+    ing: [
+      ["Red bell pepper","produce",1,"medium"],
+      ["Almonds","protein",0.5,"oz"],
+      ["Tomato","produce",0.5,"medium"],
+      ["Garlic","produce",1,"clove"],
+      ["Sherry vinegar","pantry",1,"tsp"],
+      ["Smoked paprika","pantry",0.5,"tsp"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Feta cheese","dairy",1,"oz"],
+      ["Baby lettuces","produce",1,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Pickled red onion","pantry",1,"tbsp"],
+      ["Fresh parsley","produce",1,"tbsp"],
+      ["Whole-grain pita","grain",1,"whole"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-sonoma", name: "Sonoma Chickpea",
+    img: "https://clover.imgix.net/cropped_item_photos/1518471510_XXX-crop.png?w=420&h=420&fit=crop",
+    desc: "Sonoma-style salad sandwich made with chickpeas and tofu, celery, grapes and pecans bound with a light dressing.",
+    ai: false, vg: true, kcal: 580, p: 18, c: 62, f: 28,
+    ing: [
+      ["Chickpeas (cooked)","protein",0.5,"cup"],
+      ["Firm tofu","protein",2,"oz"],
+      ["Mayonnaise","pantry",1.5,"tbsp"],
+      ["Celery","produce",1,"stalk"],
+      ["Red grapes","produce",0.25,"cup"],
+      ["Pecans","protein",0.5,"oz"],
+      ["Dijon mustard","pantry",1,"tsp"],
+      ["Lemon","produce",0.25,"whole"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Whole-grain pita","grain",1,"whole"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-ranch-hot", name: "Ranch Hot Chicken (Plant-Based)",
+    img: "https://clover.imgix.net/cropped_item_photos/1778071166_RanchHotChickenSandwichCropped.jpg?w=420&h=420&fit=crop",
+    desc: "Nashville-inspired plant-based hot chicken with cayenne glaze, vegan ranch and pickles in a pita.",
+    ai: false, kcal: 650, p: 22, c: 60, f: 32,
+    ing: [
+      ["Plant-based chicken patty","protein",4,"oz"],
+      ["Cayenne pepper","pantry",1,"tsp"],
+      ["Smoked paprika","pantry",0.5,"tsp"],
+      ["Olive oil","pantry",1.5,"tbsp"],
+      ["Mayonnaise","pantry",2,"tbsp"],
+      ["Buttermilk or plain yogurt","dairy",1,"tbsp"],
+      ["Fresh dill","produce",1,"tsp"],
+      ["Garlic","produce",1,"clove"],
+      ["Dill pickles","pantry",4,"slice"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Whole-grain pita","grain",1,"whole"],
+    ]},
+  { section: "Clover Sandwiches", id: "clover-soy-blt", name: "Soy BLT",
+    img: "https://clover.imgix.net/cropped_item_photos/1518627897_XXX-crop.png?w=420&h=420&fit=crop",
+    desc: "Classic BLT remade with smoky tempeh, lettuce, tomato and mayo in a pita.",
+    ai: false, vg: true, kcal: 540, p: 22, c: 55, f: 22,
+    ing: [
+      ["Tempeh","protein",4,"oz"],
+      ["Tamari","pantry",1,"tsp"],
+      ["Maple syrup","pantry",0.5,"tsp"],
+      ["Smoked paprika","pantry",0.25,"tsp"],
+      ["Liquid smoke (optional)","pantry",1,"dash"],
+      ["Mayonnaise","pantry",1,"tbsp"],
+      ["Baby lettuces","produce",0.5,"cup"],
+      ["Tomato","produce",1,"medium"],
+      ["Whole-grain pita","grain",1,"whole"],
+      ["Olive oil","pantry",1,"tbsp"],
+    ]},
+
+  // ===== CLOVER BOWLS =====
+  { section: "Clover Bowls", id: "clover-mediterranean", name: "Mediterranean Bowl",
+    img: "https://clover.imgix.net/cropped_item_photos/1692130649_Cropped.png?w=420&h=420&fit=crop",
+    desc: "Greens, chickpeas, cucumber, cherry tomatoes, feta, olives, hummus and tahini — all Clover's mediterranean toppings in a bowl.",
+    ai: true, kcal: 640, p: 20, c: 70, f: 30,
+    ing: [
+      ["Baby lettuces","produce",1,"cup"],
+      ["Romaine hearts","produce",1,"cup"],
+      ["Chickpeas (cooked)","protein",0.5,"cup"],
+      ["Cucumber","produce",0.5,"medium"],
+      ["Cherry tomatoes","produce",0.75,"cup"],
+      ["Feta cheese","dairy",1,"oz"],
+      ["Kalamata olives","pantry",1,"oz"],
+      ["Hummus","pantry",0.25,"cup"],
+      ["Tahini","pantry",1,"tbsp"],
+      ["Lemon","produce",0.5,"whole"],
+      ["Pickled red onion","pantry",1,"tbsp"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Garlic","produce",1,"clove"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Brown rice (dry)","grain",0.25,"cup"],
+    ]},
+  { section: "Clover Bowls", id: "clover-verde", name: "Verde Rice & Bean Bowl",
+    img: "https://clover.imgix.net/cropped_item_photos/1517937228_XXX-crop.png?w=420&h=420&fit=crop",
+    desc: "Jenny's herby green rice with black beans, salsa verde, pickled onion, avocado and tomato.",
+    ai: true, vg: true, gf: true, kcal: 620, p: 18, c: 90, f: 22,
+    ing: [
+      ["Brown rice (dry)","grain",0.33,"cup"],
+      ["Fresh cilantro","produce",2,"tbsp"],
+      ["Fresh parsley","produce",2,"tbsp"],
+      ["Lime","produce",0.5,"whole"],
+      ["Black beans (cooked)","protein",0.75,"cup"],
+      ["Tomatillos","produce",1,"medium"],
+      ["Jalapeño","produce",0.25,"whole"],
+      ["Avocado","produce",0.5,"whole"],
+      ["Cherry tomatoes","produce",0.5,"cup"],
+      ["Pickled red onion","pantry",1,"tbsp"],
+      ["Olive oil","pantry",1,"tbsp"],
+      ["Garlic","produce",2,"clove"],
+      ["Cumin (ground)","pantry",0.5,"tsp"],
+    ]},
+];
+
+/* ---------- Recipes ----------
+   Cooking steps approximated for home cooking — Life Alive style: plant-forward,
+   scratch sauces, roasted veggies, whole grains. Ingredient quantities live in the
+   RECIPES array above; these are the procedural steps.
+*/
+const RECIPE_STEPS = {
+  "miso-eggplant": [
+    "Cook brown rice. Spread thin on a parchment-lined sheet pan, brush lightly with oil, bake 425°F for 10–12 min until edges crisp.",
+    "Cube eggplant. Whisk a glaze of white miso + maple + sesame oil + rice vinegar. Toss eggplant in glaze and roast 425°F for 20–25 min.",
+    "Press and cube firm tofu. Toss with tamari + sesame oil + a pinch of cornstarch. Bake 400°F for 18–20 min until sticky.",
+    "Sauté sliced shiitake and oyster mushrooms in sesame oil; finish with a splash of tamari.",
+    "Steam broccoli florets 3–4 min.",
+    "Whisk sesame-ginger sauce: tamari, freshly grated ginger, minced garlic, sesame oil, rice vinegar, sesame seeds, dash of maple.",
+    "Plate the crispy rice base, top with eggplant, tofu, mushrooms, broccoli, and shaved carrot. Drizzle sauce, garnish with scallions."
+  ],
+  "golden-glow": [
+    "Cook brown rice + quinoa together.",
+    "Cube white sweet potato, cauliflower florets, carrots. Toss with olive oil and salt; roast 425°F for 25 min.",
+    "Roast or boil beets separately, then peel and slice.",
+    "Crisp chickpeas: drain, pat dry, toss with olive oil + salt; bake 400°F for 25 min, shaking halfway.",
+    "Sauté cremini mushrooms with a clove of garlic.",
+    "Wilt kale in a hot pan with a teaspoon of olive oil and a squeeze of lemon.",
+    "Whisk golden tahini: tahini + lemon + turmeric + grated garlic + a teaspoon of maple + warm water until pourable.",
+    "Bowl: grains base, fan out the vegetables and chickpeas, drizzle tahini, top with toasted seeds and parsley."
+  ],
+  "bibimbap": [
+    "Cook brown rice + quinoa.",
+    "Slice cremini mushrooms thick; sauté in sesame oil with garlic, chili flakes, and a splash of tamari until deeply browned.",
+    "Caramelize sliced onion in a wide pan over low heat for ~20 min until amber.",
+    "Press tofu, cube, toss with cornstarch + sesame oil; pan-fry or bake until crisp.",
+    "Blanch broccoli, julienne carrots, slice raw beets paper-thin.",
+    "Massage chopped kale with lemon and a pinch of salt.",
+    "Whisk gochujang sauce: gochujang + tamari + maple + sesame oil + rice vinegar + grated garlic.",
+    "Fry an egg sunny-side up.",
+    "Plate: rice/quinoa base; arrange tofu, mushrooms, broccoli, beets, carrots, kale, and a spoon of kimchi in sections. Top with the egg, drizzle gochujang, sprinkle sesame seeds and scallions."
+  ],
+  "shawarma-bowl": [
+    "Cook brown rice and black lentils separately.",
+    "Slice mushrooms; marinate 15 min in olive oil + cumin + smoked paprika + coriander + garlic + lemon + salt. Roast 425°F for 18–20 min.",
+    "Caramelize sliced onion slowly (~20 min) with a pinch of salt.",
+    "Roast cauliflower florets at 425°F for 20 min.",
+    "Crisp chickpeas (see Golden Glow).",
+    "Mediterranean salad: dice cucumber + tomato, chop parsley and mint, dress with lemon + olive oil + salt.",
+    "Harissa zhoug: blend cilantro + parsley + jalapeño + garlic + lemon + olive oil + harissa paste.",
+    "Lemon tahini: tahini + lemon + grated garlic + water until pourable.",
+    "Warm pita.",
+    "Assemble: rice + lentils base, smear of hummus, mushrooms and onions, cauliflower, salad, chickpeas, herbs. Drizzle both sauces; pita on the side."
+  ],
+  "corn-fritters": [
+    "Cook brown rice.",
+    "Make fritter batter: sweet corn + grated zucchini (squeezed dry) + a beaten egg + 3 tbsp chickpea or all-purpose flour + minced scallion + cumin + salt. Pan-fry tablespoon-portions in olive oil until golden on both sides (3 min/side).",
+    "Warm black beans with a clove of garlic and a pinch of cumin.",
+    "Cumin-lime vinaigrette: lime juice + olive oil + cumin + honey + salt.",
+    "Toss baby lettuces and romaine with the vinaigrette.",
+    "Dice avocado and tomato.",
+    "Plate: rice and beans base, top with fritters, avocado, tomato, dressed greens, crumbled feta, fresh cilantro."
+  ],
+  "buddha": [
+    "Cook brown rice + quinoa.",
+    "Roast or boil beets; slice.",
+    "Sauté shiitake and oyster mushrooms in olive oil with garlic.",
+    "Shred purple cabbage thin.",
+    "Massage chopped kale with olive oil, lemon, salt.",
+    "Toast pumpkin and sunflower seeds in a dry pan 2–3 min until fragrant.",
+    "Ginger-tamari sauce: tamari + grated ginger + garlic + lemon + olive oil + a teaspoon of maple.",
+    "Slice avocado and jalapeño thin.",
+    "Plate: rice/quinoa base; arrange kale, mushrooms, beets, cabbage, avocado, jalapeño in sections. Drizzle sauce, top with toasted seeds and cilantro."
+  ],
+  "green-goddess": [
+    "Cook brown rice; stir in the zest of half a lemon and a minced garlic clove at the end.",
+    "Press tofu, cube, and pan-fry in olive oil with a splash of tamari until crisp.",
+    "Steam broccoli florets 3–4 min.",
+    "Massage chopped kale with olive oil, lemon juice, and a pinch of salt.",
+    "Whisk ginger-tamari sauce (see Buddha Bowl).",
+    "Slice avocado.",
+    "Plate the lemon-garlic rice, top with kale, broccoli, tofu, and avocado. Drizzle sauce generously."
+  ],
+  "teriyaki-tofu": [
+    "Cook brown rice.",
+    "Press tofu, cube, toss with cornstarch; bake 400°F for 25 min or pan-fry until golden.",
+    "Sauté sliced mushrooms with garlic and chili flakes.",
+    "Caramelize sliced onion.",
+    "Steam broccoli; julienne carrots.",
+    "Teriyaki glaze: combine tamari + maple + rice vinegar + sesame oil + grated ginger + garlic + a cornstarch slurry. Simmer until glossy, ~3 min.",
+    "Toss the tofu and veggies in the glaze.",
+    "Plate over rice. Top with black sesame seeds and scallions."
+  ],
+  "rainbow-harvest": [
+    "Cook brown rice.",
+    "Cube sweet potato + beets + carrots. Toss with olive oil and salt; roast 425°F for 30 min.",
+    "Steam broccoli; massage kale with lemon.",
+    "Press tofu, cube, pan-fry crisp with tamari.",
+    "Whisk ginger-tamari sauce.",
+    "Optional: whip half the cooked sweet potato in a food processor with olive oil and salt until smooth.",
+    "Plate: rice base, dollop of whipped sweet potato, arrange beets, carrots, broccoli, kale, tofu. Drizzle sauce."
+  ],
+  "adventurer": [
+    "Cook brown rice + quinoa.",
+    "Roast beets; steam broccoli; massage kale.",
+    "Char sweet corn briefly in a hot pan.",
+    "Press tofu, cube, crisp it.",
+    "Tamari almonds: toast almonds in a dry pan, then off the heat toss with a splash of tamari and a few drops of sesame oil; cool.",
+    "Whisk ginger-tamari sauce.",
+    "Plate: rice/quinoa, kale, beets, broccoli, corn, tofu. Sprinkle tamari almonds, crumble white cheddar, drizzle sauce, top with sesame seeds."
+  ],
+  "caesar-salad": [
+    "Chickpea parmesan: drain chickpeas, pat dry, toss with olive oil + salt + nutritional yeast; bake 400°F for 20–25 min until crunchy.",
+    "Caesar dressing: olive oil + lemon + dijon + grated garlic + nutritional yeast + 1 tsp capers (smashed) + salt. For creamy, blend with a few soaked cashews.",
+    "Massage chopped kale with a small spoon of dressing.",
+    "Chop romaine.",
+    "Toss greens with more dressing, top with whole-grain croutons and chickpea parmesan."
+  ],
+  "chili-sesame-crunch": [
+    "Cook brown rice; spread thin, brush with oil, bake 425°F for 12 min until crispy.",
+    "Sauté sliced mushrooms with garlic, chili flakes, and a splash of tamari.",
+    "Caramelize sliced onion.",
+    "Slice cucumber and red bell pepper; julienne carrots.",
+    "Sesame-chili dressing: tamari + sesame oil + rice vinegar + maple + 1 tsp gochujang + grated ginger + garlic.",
+    "Toss romaine + baby lettuces with dressing.",
+    "Top with mushrooms, crispy rice, cucumber, pepper, carrots. Finish with sesame seeds and cilantro."
+  ],
+  "mighty-greens": [
+    "Wilt spinach in a hot pan, squeeze dry, chop.",
+    "Spinach-feta fritters: combine spinach + crumbled feta + 1 egg + 2 tbsp flour + garlic + salt + black pepper. Form small patties; pan-fry in olive oil 2–3 min per side.",
+    "Marinate white beans and edamame in olive oil + lemon + minced garlic + chopped herbs 15 min.",
+    "Steam broccoli 3 min.",
+    "Toss romaine + baby lettuces with a lemon-olive oil vinaigrette.",
+    "Plate greens, top with warm fritters, marinated beans/edamame, broccoli. Drizzle extra dressing."
+  ],
+  "mediterranean": [
+    "Falafel: pulse soaked or canned chickpeas + onion + garlic + parsley + cumin + coriander + a pinch of baking soda + 2 tbsp flour. Shape balls; bake 400°F for 25 min flipping halfway (or air-fry).",
+    "Crisp extra chickpeas with cumin and smoked paprika.",
+    "Slice cucumber, halve cherry tomatoes.",
+    "Whisk lemon-tahini dressing: tahini + lemon + garlic + water + salt.",
+    "Plate romaine + baby lettuces, dollop of hummus, falafel, crispy chickpeas, cucumber, tomatoes, feta crumbles, kalamata olives. Drizzle dressing; top with parsley."
+  ],
+  "avocado-greens": [
+    "Mix everything seasoning: sesame + poppy + dried garlic + dried onion + flaky salt.",
+    "Halve and pit avocado; coat cut sides in the seasoning.",
+    "Quick-pickle red onion: thin slices in equal parts vinegar + water + pinch of sugar + salt, 15 min.",
+    "Crisp chickpeas with olive oil + salt.",
+    "Whisk a lemon-olive oil dressing.",
+    "Toss romaine + baby lettuces with dressing.",
+    "Plate greens, top with crusted avocado, cucumber, corn, olives, chickpeas, pickled onion. Sesame seeds to finish."
+  ],
+  "cobb": [
+    "Hard-boil eggs (10 min from cold water, then ice bath, peel and halve).",
+    "Chop romaine; halve cherry tomatoes; cut corn off the cob (or use thawed frozen).",
+    "Julienne carrots.",
+    "Toast almonds in a dry pan 2 min until fragrant.",
+    "Dijon vinaigrette: olive oil + apple cider vinegar + dijon + lemon + a touch of maple + salt + pepper.",
+    "Slice avocado, crumble blue cheese.",
+    "Compose the salad: romaine base, arrange rows of egg, blue cheese, tomato, corn, carrot, avocado, almonds. Drizzle vinaigrette."
+  ],
+  "mexicali": [
+    "Cook brown lentils; while warm, mash slightly with cumin + smoked paprika + minced garlic + salt to make a taco crumble.",
+    "Warm black beans with garlic.",
+    "Halve cherry tomatoes; cut corn off; julienne carrots; slice avocado.",
+    "Cumin-lime vinaigrette: lime + olive oil + cumin + honey + salt + chili flakes.",
+    "Toss romaine + baby lettuces with vinaigrette.",
+    "Plate greens, top with lentil crumble, black beans, corn, tomatoes, carrots, avocado. Lime wedge and cilantro."
+  ],
+  "caesar-wrap": [
+    "Build caesar fillings exactly as L.A. Caesar Salad (massaged kale, romaine, croutons, chickpea parmesan, dressing).",
+    "Warm a whole-wheat tortilla in a dry skillet 20 sec per side to make it pliable.",
+    "Pile fillings down the center, leaving 2 inches at top and bottom.",
+    "Fold the sides over the filling, then roll from the bottom up, keeping it tight.",
+    "Slice on the diagonal."
+  ],
+  "falafel-pita": [
+    "Bake or air-fry falafel (see Market Mediterranean for the recipe).",
+    "Tahini slaw: thinly shred purple cabbage + grated carrot; toss with tahini + lemon + a splash of water + salt.",
+    "Slice cucumber and tomato.",
+    "Whisk lemon tahini sauce (tahini + lemon + garlic + water).",
+    "Whisk harissa zhoug (cilantro + parsley + jalapeño + garlic + lemon + olive oil + harissa).",
+    "Warm pita, slice in half. Smear interior with hummus.",
+    "Fill: falafel, slaw, cucumber, tomato, fresh parsley and mint. Drizzle both sauces."
+  ],
+  "shawarma-pita": [
+    "Marinate sliced mushrooms in shawarma spice (cumin + paprika + coriander + garlic + lemon + olive oil); roast 425°F for 20 min.",
+    "Caramelize sliced onion.",
+    "Mediterranean salad: cucumber + tomato + parsley + lemon + olive oil.",
+    "Whisk lemon tahini sauce.",
+    "Warm pita, smear with hummus.",
+    "Fill: mushrooms, onions, salad, shaved carrot. Drizzle tahini; tuck in parsley."
+  ],
+  "rainbow-nori": [
+    "Cook short-grain brown rice. While warm, fold in a splash of rice vinegar + pinch of salt + 1 tsp maple per cup of rice. Cool to room temperature.",
+    "Sauté sliced mushrooms with sesame oil and garlic.",
+    "Caramelize sliced onion.",
+    "Julienne cucumber and carrots; shred cabbage; slice avocado.",
+    "Lay a sheet of nori shiny-side down on a bamboo mat or piece of parchment.",
+    "Spread rice across the lower 2/3 of the nori, leaving a 1 inch top strip bare.",
+    "Lay fillings in a horizontal line near the bottom.",
+    "Roll tightly using the mat, sealing the bare strip with a swipe of water.",
+    "Slice with a wet knife into 6 pieces. Serve with tamari and sesame seeds."
+  ],
+  "teriyaki-wrap": [
+    "Cook brown rice.",
+    "Press tofu, cube, crisp it.",
+    "Sauté mushrooms with garlic and a pinch of chili flakes.",
+    "Steam broccoli; julienne carrots.",
+    "Make teriyaki glaze (see Teriyaki Tofu).",
+    "Toss tofu and vegetables in the glaze.",
+    "Warm a whole-wheat tortilla. Layer rice + glazed fillings down the center.",
+    "Roll tightly and slice on the diagonal. Sprinkle with black sesame seeds."
+  ],
+
+  // ----- Clover -----
+  "clover-chickpea-fritter": [
+    "Pulse soaked chickpeas with onion, garlic, parsley, cilantro, cumin, coriander, a pinch of baking soda and 2 tbsp flour until a coarse paste forms.",
+    "Shape into small balls or patties; bake at 400°F for 25 min flipping halfway (or air-fry).",
+    "Quick-pickle thinly sliced red onion in vinegar + water + pinch of sugar + salt, 15 min.",
+    "Whisk tahini sauce: tahini + lemon + water + grated garlic + salt until pourable.",
+    "Slice tomato; pile lettuce.",
+    "Warm a fluffy pita in a dry skillet 20 sec per side. Slice open like a pocket.",
+    "Layer: lettuce, fritters, tomato, pickled onion. Drizzle tahini generously."
+  ],
+  "clover-mushroom-popper": [
+    "Halve cremini mushrooms; toss in a quick batter of cornstarch + a pinch of salt + cold water.",
+    "Pan-fry the mushrooms in olive oil over medium-high heat until deeply golden and crisp, ~5 min per side.",
+    "Whisk honey-sriracha glaze: honey + sriracha + tamari + minced garlic. Warm gently.",
+    "Toss the fried mushrooms in the glaze.",
+    "Slice jalapeño into thin ribbons. Pile lettuce.",
+    "Warm pita; slice open.",
+    "Layer: lettuce, glazed mushrooms, jalapeño, pickled onion. Eat immediately while crisp."
+  ],
+  "clover-crispy-chicken": [
+    "Cook the plant-based chicken patty per its package: usually pan-fry in olive oil or oven-bake until golden on both sides.",
+    "Mix special sauce: mayonnaise + dijon + a pinch of smoked paprika.",
+    "Slice tomato; fan out pickle slices; pile lettuce.",
+    "Warm pita; slice open.",
+    "Spread special sauce inside the pita, then layer: lettuce, patty, tomato, pickles."
+  ],
+  "clover-romesco-feta": [
+    "Roast red pepper directly over a flame or under the broiler until blackened on all sides. Cover, steam 10 min, then peel and seed.",
+    "In a blender, combine the pepper + almonds + tomato + garlic + sherry vinegar + smoked paprika + olive oil + a pinch of salt. Pulse to a chunky sauce.",
+    "Slice cucumber; toss with a little lemon and salt.",
+    "Warm pita; slice open.",
+    "Layer: lettuce, generous schmear of romesco, crumbled feta, cucumber, pickled onion, parsley."
+  ],
+  "clover-sonoma": [
+    "Press tofu briefly; cube small (~¼ inch).",
+    "In a bowl combine: chickpeas (roughly mashed), tofu cubes, minced celery, halved red grapes, chopped pecans.",
+    "Dress with: mayonnaise + dijon + lemon juice + salt + pepper. Toss to coat.",
+    "Taste and adjust salt/lemon.",
+    "Warm pita; slice open.",
+    "Pile lettuce in pita, then the chickpea-tofu salad. Eat at room temp or chilled."
+  ],
+  "clover-ranch-hot": [
+    "Cook plant-based chicken patty until crisp.",
+    "Cayenne oil: warm olive oil + cayenne + smoked paprika together for 1 min, off heat.",
+    "Brush the cayenne oil onto the hot patty.",
+    "Buttermilk ranch: stir mayonnaise + a spoon of buttermilk (or yogurt) + dill + minced garlic + salt + pepper.",
+    "Warm pita; slice open.",
+    "Layer: ranch smear, lettuce, hot-glazed patty, pickles."
+  ],
+  "clover-soy-blt": [
+    "Slice tempeh thin (about ⅛ inch).",
+    "Marinade: tamari + maple + smoked paprika + a dash of liquid smoke + a few drops of olive oil. Let tempeh sit 15 min.",
+    "Pan-fry the tempeh in olive oil until crisp on both sides, glazing with any leftover marinade at the end.",
+    "Slice tomato; pile lettuce.",
+    "Warm pita; slice open.",
+    "Spread mayo inside, then layer: lettuce, tempeh, tomato. Eat warm."
+  ],
+  "clover-mediterranean": [
+    "Cook brown rice.",
+    "Crisp chickpeas in olive oil with salt (pan or oven).",
+    "Slice cucumber; halve cherry tomatoes; chop parsley.",
+    "Whisk lemon-tahini drizzle: tahini + lemon + grated garlic + water + salt.",
+    "Quick-pickle red onion if you don't have any.",
+    "Build the bowl: rice + greens base, dollop of hummus, then chickpeas, cucumber, tomatoes, olives, feta crumbles, pickled onion. Drizzle tahini, finish with parsley and a glug of olive oil."
+  ],
+  "clover-verde": [
+    "Cook brown rice. While warm, fold in finely chopped cilantro + parsley + lime zest + lime juice + a pinch of salt. This is 'Jenny's herby rice.'",
+    "Warm black beans with garlic + cumin + a splash of water + salt.",
+    "Make salsa verde: blend roasted tomatillo (broil 5 min) + jalapeño + cilantro + garlic + lime + salt.",
+    "Slice avocado; halve cherry tomatoes.",
+    "Build the bowl: herby rice base, black beans, salsa verde, avocado, tomatoes, pickled onion. Lime wedge on the side."
+  ]
+};
+
+/* ---------- Meal prep ----------
+   For each dish: how long the components keep, what to batch on prep day, what
+   to add fresh at meal time, and a quick assemble/reheat instruction. The
+   premise: most of these dishes are bowl/composed-plate format, so you can
+   prep the durable parts and assemble fast on the day.
+*/
+const MEAL_PREP = {
+  "miso-eggplant": {
+    keeps: "4 days (eggplant softens but flavor improves)",
+    batch: [
+      "Roast the miso eggplant — gets even better overnight",
+      "Bake the sticky sesame tofu; store dry in its own container so edges stay firm",
+      "Sauté shiitake + oyster mushrooms; cool fully before storing",
+      "Cook brown rice; store plain",
+      "Whisk the sesame-ginger sauce into a small jar"
+    ],
+    fresh: [
+      "Crisp the rice fresh — spread cold cooked rice thin in a hot dry skillet 4 min; pre-crisped and stored, it gets chewy",
+      "Slice scallions just before serving"
+    ],
+    assemble: "Re-crisp the rice in a hot skillet (4 min). Microwave eggplant/tofu/mushrooms 60 sec. Plate, drizzle sauce, finish with scallions."
+  },
+  "golden-glow": {
+    keeps: "5 days",
+    batch: [
+      "Roast white sweet potato + cauliflower + carrots on one sheet pan",
+      "Roast or boil beets separately so they don't dye the other veg",
+      "Sauté the cremini mushrooms",
+      "Cook brown rice + quinoa together",
+      "Crisp chickpeas — store at room temp in a paper bag, NOT the fridge (they go limp)",
+      "Whisk the golden tahini into a jar (thin with water before serving)"
+    ],
+    fresh: [
+      "Wilt the kale fresh (60 sec in a hot pan) or massage raw with olive oil + lemon",
+      "Toast the pumpkin/sunflower seeds the morning of — pre-toasted seeds go stale"
+    ],
+    assemble: "Microwave grains + roasted veg 60–90 sec, top with kale + crispy chickpeas + seeds, drizzle tahini, finish with parsley."
+  },
+  "bibimbap": {
+    keeps: "4 days (no egg)",
+    batch: [
+      "Crisp the tofu",
+      "Cook the chili-garlic mushrooms + caramelized onions (combine)",
+      "Blanch broccoli; thinly slice raw beets and carrots",
+      "Massage kale with lemon + salt",
+      "Whisk gochujang sauce into a jar",
+      "Cook brown rice + quinoa"
+    ],
+    fresh: [
+      "Fry an egg fresh per bowl — never store fried eggs",
+      "Scoop kimchi straight from the jar at meal time"
+    ],
+    assemble: "Microwave grains + warm components, arrange tofu/mushrooms/broccoli/beets/carrots/kale/kimchi in sections, top with the fried egg, drizzle gochujang, sprinkle sesame and scallions."
+  },
+  "shawarma-bowl": {
+    keeps: "5 days",
+    batch: [
+      "Roast the shawarma mushrooms + caramelized onions (combine into one container)",
+      "Cook black lentils and brown rice",
+      "Roast cauliflower florets",
+      "Crispy chickpeas (room temp paper bag)",
+      "Hummus, harissa zhoug, lemon tahini — each in its own small jar (zhoug and tahini keep ~1 week)",
+      "Mediterranean salad mix: dice cucumber + tomato + parsley + mint and store dry, UNDRESSED"
+    ],
+    fresh: [
+      "Dress the med salad just before serving",
+      "Warm pita in a dry skillet 20 sec/side"
+    ],
+    assemble: "Microwave grains + mushrooms 60 sec. Build bowl: lentils + rice base, smear of hummus, mushrooms, cauliflower, dressed salad, chickpeas. Drizzle zhoug + tahini. Pita on the side."
+  },
+  "corn-fritters": {
+    keeps: "3 days (fritters degrade — flavor's best within 24h of frying)",
+    batch: [
+      "Mix the fritter batter — raw batter keeps 2 days in the fridge; DON'T pre-fry them",
+      "Warm + season the black beans",
+      "Cook brown rice",
+      "Whisk cumin-lime vinaigrette into a jar"
+    ],
+    fresh: [
+      "Pan-fry the fritters at meal time — about 3 min/side",
+      "Dice avocado + tomato",
+      "Toss baby lettuces + romaine with vinaigrette"
+    ],
+    assemble: "Plate warm rice + beans, top with hot fritters, then avocado, tomato, dressed greens, crumbled feta, cilantro."
+  },
+  "buddha": {
+    keeps: "4 days",
+    batch: [
+      "Cook brown rice + quinoa",
+      "Roast or boil beets; slice and cool",
+      "Sauté shiitake + oyster mushrooms",
+      "Massage kale with olive oil + lemon + salt (good for 3 days)",
+      "Shred purple cabbage raw and bag dry",
+      "Whisk ginger-tamari sauce into a 4 oz jar"
+    ],
+    fresh: [
+      "Slice avocado and jalapeño at meal time (avocado browns)",
+      "Toast pumpkin + sunflower seeds fresh — 2 min in a dry pan, transforms them"
+    ],
+    assemble: "Reheat grains 60 sec with a splash of water, arrange kale + mushrooms + beets + cabbage + avocado + jalapeño in sections, drizzle sauce, finish with toasted seeds and cilantro."
+  },
+  "green-goddess": {
+    keeps: "4 days",
+    batch: [
+      "Cook lemon-garlic brown rice",
+      "Crisp the tofu (store dry)",
+      "Steam broccoli",
+      "Massage kale",
+      "Whisk ginger-tamari sauce"
+    ],
+    fresh: ["Slice avocado at meal time"],
+    assemble: "Microwave grains + tofu + broccoli, plate over kale, slice avocado on top, drizzle sauce."
+  },
+  "teriyaki-tofu": {
+    keeps: "4 days",
+    batch: [
+      "Crisp the tofu (store dry, NOT in glaze yet)",
+      "Sauté mushrooms + onions",
+      "Blanch broccoli, julienne carrots",
+      "Cook brown rice",
+      "Reduce the teriyaki glaze into a jar"
+    ],
+    fresh: [
+      "Toss the tofu + veg in warm glaze at meal time so they don't go soggy in storage",
+      "Slice scallions"
+    ],
+    assemble: "Microwave tofu + veg + rice, toss with glaze, plate, top with scallions and black sesame."
+  },
+  "rainbow-harvest": {
+    keeps: "5 days",
+    batch: [
+      "Sheet-pan roast sweet potato + beets + carrots together",
+      "Steam broccoli; massage kale with lemon",
+      "Crisp tofu (store dry)",
+      "Cook brown rice",
+      "Whisk ginger-tamari sauce"
+    ],
+    fresh: ["Optional: whip half the warm sweet potato fresh — or skip the whip and serve cubed"],
+    assemble: "Microwave rice + tofu + roasted veg, plate with cold kale, drizzle sauce."
+  },
+  "adventurer": {
+    keeps: "4 days",
+    batch: [
+      "Cook brown rice + quinoa",
+      "Roast beets; steam broccoli; massage kale; char corn",
+      "Crisp tofu (store dry)",
+      "Tamari almonds — toast and glaze, store airtight at room temp",
+      "Whisk ginger-tamari sauce"
+    ],
+    fresh: ["Crumble white cheddar fresh"],
+    assemble: "Microwave grains + tofu + roasted veg, plate, sprinkle tamari almonds + cheddar, drizzle sauce."
+  },
+  "caesar-salad": {
+    keeps: "3 days",
+    batch: [
+      "Roast chickpea parmesan; store in a paper bag at room temp",
+      "Whisk caesar dressing into a jar (keeps ~1 week)",
+      "Massage kale — pre-dressed is fine for 3 days, or store separately"
+    ],
+    fresh: [
+      "Chop romaine the day-of (it browns fast once cut)",
+      "Add croutons at the last second so they don't soak"
+    ],
+    assemble: "Toss kale + romaine + dressing, top with chickpea parm and croutons."
+  },
+  "chili-sesame-crunch": {
+    keeps: "3 days",
+    batch: [
+      "Cook the chili-garlic mushrooms + caramelized onions (combine)",
+      "Slice cucumber, red pepper, julienne carrots; store dry",
+      "Whisk sesame-chili dressing into a jar"
+    ],
+    fresh: [
+      "Re-crisp brown rice fresh in a hot pan (4 min) — pre-crisped goes chewy",
+      "Toss greens with dressing only at meal time"
+    ],
+    assemble: "Re-crisp rice, dress greens, layer mushrooms + veggies + crispy rice on top, finish with sesame seeds and cilantro."
+  },
+  "mighty-greens": {
+    keeps: "3 days",
+    batch: [
+      "Pan-fry spinach-feta fritters — they reheat well in a skillet",
+      "Marinate white beans + edamame in lemon-olive oil + garlic + herbs (gets better day 2)",
+      "Steam broccoli",
+      "Lemon vinaigrette in a jar"
+    ],
+    fresh: ["Toss baby lettuces + romaine with dressing at meal time"],
+    assemble: "Reheat fritters 4 min in a hot skillet, dress greens, plate with marinated beans + broccoli + warm fritters."
+  },
+  "mediterranean": {
+    keeps: "5 days (falafel re-crisps really well)",
+    batch: [
+      "Bake a double batch of falafel — keep refrigerated, re-crisp at meal time",
+      "Crisp chickpeas (room temp paper bag)",
+      "Hummus in a jar, lemon-tahini dressing in a jar",
+      "Kalamata olives and feta — keep in their existing containers"
+    ],
+    fresh: [
+      "Halve cherry tomatoes and slice cucumber the day-of",
+      "Re-crisp falafel 4 min in a 400°F oven or hot skillet"
+    ],
+    assemble: "Plate romaine + baby lettuces, dollop of hummus, then falafel + chickpeas + cucumber + tomato + feta + olives. Drizzle dressing; top with parsley."
+  },
+  "avocado-greens": {
+    keeps: "3 days",
+    batch: [
+      "Mix everything seasoning blend (lasts months)",
+      "Quick-pickle red onion in vinegar + water + salt (keeps weeks)",
+      "Crispy chickpeas (room temp)",
+      "Lemon-olive oil dressing in a jar"
+    ],
+    fresh: [
+      "Halve, pit, and coat avocado in the seasoning at meal time",
+      "Slice cucumber the day-of"
+    ],
+    assemble: "Dress greens, plate, top with crusted avocado + cucumber + corn + olives + chickpeas + pickled onion."
+  },
+  "cobb": {
+    keeps: "3 days",
+    batch: [
+      "Hard-boil eggs — store in shells (5 days)",
+      "Julienne carrots; corn off the cob",
+      "Toast almonds in a dry pan; store airtight at room temp",
+      "Dijon vinaigrette in a jar",
+      "Crumble blue cheese into its own small container"
+    ],
+    fresh: [
+      "Halve cherry tomatoes (1–2 days if pre-cut)",
+      "Slice avocado at meal time"
+    ],
+    assemble: "Compose romaine base, peel and halve eggs, lay out rows of egg / blue cheese / tomato / corn / carrot / avocado / almonds. Drizzle vinaigrette."
+  },
+  "mexicali": {
+    keeps: "5 days",
+    batch: [
+      "Cook the lentil taco crumble — better on day 2",
+      "Warm black beans; char corn",
+      "Julienne carrots",
+      "Cumin-lime vinaigrette in a jar"
+    ],
+    fresh: [
+      "Slice avocado at meal time",
+      "Halve cherry tomatoes (1–2 days if pre-cut)"
+    ],
+    assemble: "Dress greens, plate, top with lentil crumble + beans + corn + tomatoes + carrots + avocado. Lime wedge, cilantro."
+  },
+  "caesar-wrap": {
+    keeps: "3 days as components (rolled wraps go soggy by day 2)",
+    batch: [
+      "Caesar fillings prep — see Caesar Salad",
+      "Don't pre-roll the wraps"
+    ],
+    fresh: ["Warm tortilla, fill, and roll just before eating"],
+    assemble: "Warm tortilla 20 sec each side, pile caesar mix + croutons down the center, roll tight, slice diagonally."
+  },
+  "falafel-pita": {
+    keeps: "4 days (components)",
+    batch: [
+      "Bake falafel; re-crisp in skillet or oven day-of",
+      "Tahini slaw keeps 3 days even dressed (the cabbage holds up)",
+      "Lemon tahini sauce and harissa zhoug — each in its own jar"
+    ],
+    fresh: [
+      "Slice cucumber and tomato",
+      "Warm pita"
+    ],
+    assemble: "Warm pita, smear hummus, fill with re-crisped falafel + slaw + cucumber + tomato + herbs, drizzle both sauces."
+  },
+  "shawarma-pita": {
+    keeps: "4 days",
+    batch: [
+      "Roast shawarma mushrooms + onions",
+      "Mediterranean salad mix (undressed, dry)",
+      "Hummus and lemon tahini in jars"
+    ],
+    fresh: ["Warm pita; dress the salad"],
+    assemble: "Warm pita, smear hummus, fill with mushrooms + onions + dressed salad + shaved carrot, drizzle tahini."
+  },
+  "rainbow-nori": {
+    keeps: "2 days assembled (rice hardens), 4 days as components",
+    batch: [
+      "Cook sushi-style brown rice; cool fully",
+      "Sauté mushrooms + onions",
+      "Julienne cucumber, carrots, shred cabbage — keep dry"
+    ],
+    fresh: [
+      "Slice avocado at meal time",
+      "Roll the nori within a few hours of eating"
+    ],
+    assemble: "Lay nori, spread cool rice, line fillings + avocado horizontally, roll tight using a mat, slice with a wet knife."
+  },
+  "teriyaki-wrap": {
+    keeps: "3 days as components",
+    batch: ["Cook the glazed tofu + veg, brown rice"],
+    fresh: ["Warm tortilla, roll just before eating so it doesn't go soggy"],
+    assemble: "Warm tortilla, layer rice + glazed tofu + veg, roll tightly, slice diagonally, sprinkle black sesame."
+  },
+
+  // ----- Clover -----
+  "clover-chickpea-fritter": {
+    keeps: "4 days as components",
+    batch: [
+      "Bake a double batch of falafel (re-crisp day-of)",
+      "Quick-pickle red onion",
+      "Tahini sauce in a jar"
+    ],
+    fresh: ["Slice tomato; warm pita just before serving"],
+    assemble: "Re-crisp falafel, warm pita, layer lettuce + falafel + tomato + pickled onion, drizzle tahini."
+  },
+  "clover-mushroom-popper": {
+    keeps: "Best eaten same day — the crisp + glaze combo doesn't keep",
+    batch: ["Whisk honey-sriracha glaze into a jar (lasts 2 weeks)"],
+    fresh: [
+      "Batter and pan-fry mushrooms within 30 min of eating",
+      "Glaze them right out of the pan",
+      "Slice jalapeño thin; warm pita"
+    ],
+    assemble: "Pan-fry battered mushrooms, glaze hot, fill warm pita with lettuce + glazed mushrooms + jalapeño + pickled onion. Eat immediately."
+  },
+  "clover-crispy-chicken": {
+    keeps: "3 days as components",
+    batch: [
+      "Cook the plant-based patty if it's a frozen brand; re-crisp day-of",
+      "Special sauce (mayo + dijon + paprika) in a small jar"
+    ],
+    fresh: ["Slice tomato; warm pita; re-crisp patty 3 min/side"],
+    assemble: "Warm pita, spread sauce, layer lettuce + patty + tomato + pickles."
+  },
+  "clover-romesco-feta": {
+    keeps: "5 days (romesco gets even better day 2–3)",
+    batch: [
+      "Roast pepper, blend romesco sauce into a jar",
+      "Slice cucumber (1–2 days), pickled red onion (weeks)",
+      "Crumble feta into a container"
+    ],
+    fresh: ["Warm pita; chop parsley"],
+    assemble: "Warm pita, schmear romesco generously, layer lettuce + cucumber + feta + pickled onion + parsley."
+  },
+  "clover-sonoma": {
+    keeps: "4 days — the chickpea-tofu salad actually improves on day 2",
+    batch: [
+      "Make the FULL chickpea-tofu salad ahead — let flavors meld",
+      "Toast pecans separately so they stay crunchy"
+    ],
+    fresh: ["Warm pita; add pecans just before assembling"],
+    assemble: "Warm pita, pile lettuce + chickpea salad inside, sprinkle pecans."
+  },
+  "clover-ranch-hot": {
+    keeps: "3 days",
+    batch: [
+      "Cayenne oil in a small jar (steeped is better)",
+      "Buttermilk ranch in a jar (3–4 days)",
+      "Cook patty; re-crisp day-of"
+    ],
+    fresh: ["Re-crisp patty 3 min/side, glaze hot with cayenne oil; warm pita"],
+    assemble: "Spread ranch in pita, layer lettuce + glazed patty + pickles."
+  },
+  "clover-soy-blt": {
+    keeps: "4 days (cooked tempeh holds up well)",
+    batch: ["Marinate + pan-fry the tempeh ahead — flavor deepens"],
+    fresh: ["Slice tomato; warm pita"],
+    assemble: "Re-warm tempeh 30 sec in a pan, spread mayo in warm pita, layer lettuce + tempeh + tomato."
+  },
+  "clover-mediterranean": {
+    keeps: "5 days",
+    batch: [
+      "Cook brown rice",
+      "Crispy chickpeas (room temp)",
+      "Hummus, lemon-tahini, pickled red onion (all in jars)",
+      "Feta crumbles, olives in their containers"
+    ],
+    fresh: [
+      "Halve cherry tomatoes + slice cucumber the day-of",
+      "Wash greens"
+    ],
+    assemble: "Layer rice + greens, dollop hummus, arrange chickpeas + cucumber + tomato + feta + olives + pickled onion, drizzle tahini."
+  },
+  "clover-verde": {
+    keeps: "5 days (herby rice flavors meld)",
+    batch: [
+      "Cook herby green rice — better day 2",
+      "Warm black beans; salsa verde in a jar"
+    ],
+    fresh: [
+      "Slice avocado at meal time",
+      "Halve cherry tomatoes (1–2 days if pre-cut)"
+    ],
+    assemble: "Reheat rice + beans 60 sec, top with salsa verde, avocado, tomatoes, pickled onion."
+  }
+};
+
+const SECTIONS = ["Grain Bowls","Salads","Wraps","Clover Sandwiches","Clover Bowls"];
+const CAT_ORDER = ["produce","protein","grain","dairy","pantry"];
+const CAT_LABELS = { produce: "Produce", protein: "Proteins & Legumes", grain: "Grains & Breads", dairy: "Dairy", pantry: "Pantry" };
+
+const LS_KEY = "lifeAliveMealPicker:v1";
+const IN_COWORK = !!(typeof window !== "undefined" && window.cowork && typeof window.cowork.callMcpTool === "function");
+const JONAH_EMAIL = "jkudlerflam@gmail.com";
+const ROLLING_NOTE_TITLE = "Groceries";
+const ROLLING_NOTE_FOLDER = "Notes";
+// Apple Shortcut on Jonah's Mac that handles appending to the Groceries note
+// while preserving checklist formatting. See README in the Meal Prep folder
+// for one-time install instructions.
+const SHORTCUT_NAME = "Append to Groceries";
+
+let state = loadState();
+let currentSection = SECTIONS[0];
+let aiOnly = false;
+
+function emptyState() {
+  const s = {}; RECIPES.forEach(r => s[r.id] = 0); return s;
+}
+
+// Encode selections as a compact URL hash:  #m=miso-eggplant:2,buddha:1
+function encodeStateToHash(st) {
+  const parts = [];
+  Object.entries(st).forEach(([id, n]) => { if (n > 0) parts.push(id + ":" + n); });
+  return parts.length ? "m=" + parts.join(",") : "";
+}
+function decodeHashToState(hash) {
+  const s = emptyState();
+  if (!hash) return null;
+  const h = hash.replace(/^#/, "");
+  if (!h.startsWith("m=")) return null;
+  let any = false;
+  h.slice(2).split(",").forEach(pair => {
+    const [id, n] = pair.split(":");
+    if (id in s) { s[id] = parseInt(n, 10) || 0; any = any || s[id] > 0; }
+  });
+  return any ? s : null;
+}
+
+function loadState() {
+  // URL hash takes precedence — that's how "share link" works on the recipient side.
+  try {
+    const fromHash = decodeHashToState(window.location.hash);
+    if (fromHash) {
+      // Save into localStorage so the link recipient keeps it after they reload.
+      localStorage.setItem(LS_KEY, JSON.stringify(fromHash));
+      return fromHash;
+    }
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const s = emptyState();
+      Object.keys(s).forEach(k => { s[k] = parsed[k] || 0; });
+      return s;
+    }
+  } catch (e) {}
+  return emptyState();
+}
+function saveState() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function renderTabs() {
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  SECTIONS.forEach(sec => {
+    const count = RECIPES.filter(r => r.section === sec).reduce((n, r) => n + (state[r.id] > 0 ? 1 : 0), 0);
+    const b = document.createElement("button");
+    b.className = "tab" + (sec === currentSection ? " active" : "");
+    b.innerHTML = sec + (count ? `<span class="count">${count}</span>` : "");
+    b.onclick = () => { currentSection = sec; renderTabs(); renderGrid(); };
+    tabs.appendChild(b);
+  });
+}
+
+function fmtQty(n) {
+  // Pretty fractions for common values, else round to 2 decimals.
+  const rounded = Math.round(n * 100) / 100;
+  const whole = Math.floor(rounded);
+  const frac = rounded - whole;
+  const FR = { 0.25: "¼", 0.33: "⅓", 0.5: "½", 0.67: "⅔", 0.75: "¾" };
+  // Snap near-matches
+  for (const k of Object.keys(FR).map(Number)) {
+    if (Math.abs(frac - k) < 0.04) {
+      return (whole ? whole + " " : "") + FR[k];
+    }
+  }
+  if (Math.abs(frac) < 0.04) return String(whole);
+  return rounded.toString();
+}
+
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  const items = RECIPES.filter(r => r.section === currentSection && (!aiOnly || r.ai));
+  if (!items.length) {
+    grid.innerHTML = '<div class="empty">No items match the filter.</div>';
+    return;
+  }
+  items.forEach(r => grid.appendChild(makeCard(r)));
+}
+
+function makeCard(r) {
+  const qty = state[r.id] || 0;
+  const card = document.createElement("div");
+  card.className = "card" + (qty > 0 ? " selected" : "");
+  card.dataset.id = r.id;
+
+  // Image area with floating badges
+  if (r.img) {
+    const wrap = document.createElement("div");
+    wrap.className = "card-img-wrap";
+    const im = document.createElement("img");
+    im.className = "card-img";
+    im.loading = "lazy";
+    im.alt = r.name;
+    im.src = r.img;
+    im.onerror = () => { wrap.style.display = "none"; };
+    const imgBadges = document.createElement("div");
+    imgBadges.className = "badges";
+    if (r.ai) imgBadges.innerHTML += '<span class="badge ai">🌿 Anti-Inflam</span>';
+    if (r.gf) imgBadges.innerHTML += '<span class="badge gf">GF</span>';
+    if (r.vg) imgBadges.innerHTML += '<span class="badge vg">Vegan</span>';
+    wrap.appendChild(im);
+    wrap.appendChild(imgBadges);
+    card.appendChild(wrap);
+  }
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+
+  const head = document.createElement("div");
+  head.className = "card-head";
+  const title = document.createElement("h3");
+  title.className = "card-title";
+  title.textContent = r.name;
+  head.appendChild(title);
+  // If no image, also show badges inline (fallback)
+  if (!r.img) {
+    const badges = document.createElement("div");
+    badges.className = "badges";
+    if (r.ai) badges.innerHTML += '<span class="badge ai">🌿 Anti-Inflam</span>';
+    if (r.gf) badges.innerHTML += '<span class="badge gf">GF</span>';
+    if (r.vg) badges.innerHTML += '<span class="badge vg">Vegan</span>';
+    head.appendChild(badges);
+  }
+
+  const desc = document.createElement("p");
+  desc.className = "desc";
+  desc.textContent = r.desc;
+
+  const macros = document.createElement("div");
+  macros.className = "macros";
+  macros.innerHTML = `
+    <span class="macro"><b>${r.kcal}</b> kcal</span>
+    <span class="macro"><b>${r.p}</b>g P</span>
+    <span class="macro"><b>${r.c}</b>g C</span>
+    <span class="macro"><b>${r.f}</b>g F</span>`;
+
+  const ingBtn = document.createElement("button");
+  ingBtn.className = "toggle-ing";
+  ingBtn.textContent = "Show ingredients";
+  const ing = document.createElement("div");
+  ing.className = "ingredients";
+  ing.textContent = r.ing.map(i => `${fmtQty(i[2])} ${i[3]} ${i[0]}`).join(" • ");
+  ingBtn.onclick = () => {
+    card.classList.toggle("show-ing");
+    ingBtn.textContent = card.classList.contains("show-ing") ? "Hide ingredients" : "Show ingredients";
+  };
+
+  // Recipe (cooking steps)
+  const steps = RECIPE_STEPS[r.id];
+  let recBtn = null, rec = null;
+  if (steps && steps.length) {
+    recBtn = document.createElement("button");
+    recBtn.className = "toggle-rec";
+    recBtn.textContent = "👩‍🍳 Show recipe";
+    rec = document.createElement("div");
+    rec.className = "recipe";
+    const inner = document.createElement("div");
+    inner.className = "recipe-inner";
+    inner.innerHTML = "<ol>" + steps.map(s => `<li>${escapeHtml(s)}</li>`).join("") + "</ol>";
+    rec.appendChild(inner);
+    recBtn.onclick = () => {
+      card.classList.toggle("show-rec");
+      recBtn.textContent = card.classList.contains("show-rec") ? "👩‍🍳 Hide recipe" : "👩‍🍳 Show recipe";
+    };
+  }
+
+  // Meal prep guidance
+  const prep = MEAL_PREP[r.id];
+  let prepBtn = null, prepEl = null;
+  if (prep) {
+    prepBtn = document.createElement("button");
+    prepBtn.className = "toggle-prep";
+    prepBtn.textContent = "🥡 Show meal prep";
+    prepEl = document.createElement("div");
+    prepEl.className = "mealprep";
+    const inner = document.createElement("div");
+    inner.className = "mealprep-inner";
+    let html = "";
+    if (prep.keeps) html += `<div class="keeps">Keeps: ${escapeHtml(prep.keeps)}</div>`;
+    if (prep.batch && prep.batch.length) {
+      html += `<h4>Make on prep day</h4><ul>`;
+      prep.batch.forEach(b => { html += `<li>${escapeHtml(b)}</li>`; });
+      html += `</ul>`;
+    }
+    if (prep.fresh && prep.fresh.length) {
+      html += `<h4>Add fresh at meal time</h4><ul>`;
+      prep.fresh.forEach(f => { html += `<li>${escapeHtml(f)}</li>`; });
+      html += `</ul>`;
+    }
+    if (prep.assemble) html += `<div class="assemble">${escapeHtml(prep.assemble)}</div>`;
+    inner.innerHTML = html;
+    prepEl.appendChild(inner);
+    prepBtn.onclick = () => {
+      card.classList.toggle("show-prep");
+      prepBtn.textContent = card.classList.contains("show-prep") ? "🥡 Hide meal prep" : "🥡 Show meal prep";
+    };
+  }
+
+  const serv = document.createElement("div");
+  serv.className = "servings";
+  serv.innerHTML = `<span class="servings-label">Servings</span>`;
+  const step = document.createElement("div");
+  step.className = "stepper";
+  const minus = document.createElement("button"); minus.textContent = "−";
+  const q = document.createElement("span"); q.className = "qty"; q.textContent = qty;
+  const plus = document.createElement("button"); plus.textContent = "+";
+  minus.onclick = () => updateQty(r.id, -1);
+  plus.onclick = () => updateQty(r.id, +1);
+  step.appendChild(minus); step.appendChild(q); step.appendChild(plus);
+  serv.appendChild(step);
+
+  body.appendChild(head);
+  body.appendChild(desc);
+  body.appendChild(macros);
+  body.appendChild(ingBtn);
+  body.appendChild(ing);
+  if (recBtn) { body.appendChild(recBtn); body.appendChild(rec); }
+  if (prepBtn) { body.appendChild(prepBtn); body.appendChild(prepEl); }
+  body.appendChild(serv);
+  card.appendChild(body);
+  return card;
+}
+
+function updateQty(id, delta) {
+  state[id] = Math.max(0, (state[id] || 0) + delta);
+  saveState();
+  renderTabs();
+  renderGrid();
+  renderPanel();
+}
+
+function aggregate() {
+  const totals = {}; // key = ingredient name + "|" + unit
+  let kcal = 0, p = 0, c = 0, f = 0, items = 0;
+  RECIPES.forEach(r => {
+    const n = state[r.id] || 0;
+    if (n <= 0) return;
+    items += n;
+    kcal += n * r.kcal; p += n * r.p; c += n * r.c; f += n * r.f;
+    r.ing.forEach(([name, cat, qty, unit]) => {
+      const key = name + "|" + unit;
+      if (!totals[key]) totals[key] = { name, cat, unit, qty: 0 };
+      totals[key].qty += qty * n;
+    });
+  });
+  return { totals, kcal, p, c, f, items };
+}
+
+function renderPanel() {
+  const { totals, kcal, p, c, f, items } = aggregate();
+  document.getElementById("panel-title").textContent =
+    `Shopping list (${items} ${items === 1 ? "serving" : "servings"})`;
+  const sum = document.getElementById("summary");
+  sum.innerHTML = items
+    ? `<span class="macro"><b>${kcal.toLocaleString()}</b> kcal</span>
+       <span class="macro"><b>${Math.round(p)}</b>g P</span>
+       <span class="macro"><b>${Math.round(c)}</b>g C</span>
+       <span class="macro"><b>${Math.round(f)}</b>g F</span>`
+    : "";
+  document.getElementById("export-btn").disabled = items === 0;
+  document.getElementById("copy-btn").disabled = items === 0;
+
+  const cats = document.getElementById("shopping-cats");
+  cats.innerHTML = "";
+  if (!items) {
+    cats.innerHTML = '<div class="empty">Pick some meals above to build your list.</div>';
+    return;
+  }
+  const byCat = {};
+  Object.values(totals).forEach(t => {
+    (byCat[t.cat] = byCat[t.cat] || []).push(t);
+  });
+  CAT_ORDER.forEach(cat => {
+    if (!byCat[cat]) return;
+    const list = byCat[cat].sort((a, b) => a.name.localeCompare(b.name));
+    const div = document.createElement("div");
+    div.className = "shopping-cat";
+    let html = `<h3>${CAT_LABELS[cat]}</h3><ul>`;
+    list.forEach(t => {
+      html += `<li><span>${t.name}</span><span class="qty">${fmtQty(t.qty)} ${t.unit}</span></li>`;
+    });
+    html += "</ul>";
+    div.innerHTML = html;
+    cats.appendChild(div);
+  });
+}
+
+function buildExportText() {
+  const { totals, kcal, p, c, f, items } = aggregate();
+  if (!items) return "";
+  const today = new Date();
+  const date = today.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  // Selected meals summary
+  const selected = RECIPES.filter(r => (state[r.id] || 0) > 0)
+    .map(r => `• ${r.name} × ${state[r.id]}${r.ai ? "  🌿" : ""}`);
+
+  // Ingredients grouped by category
+  const byCat = {};
+  Object.values(totals).forEach(t => (byCat[t.cat] = byCat[t.cat] || []).push(t));
+
+  let lines = [];
+  lines.push(`Life Alive Shopping List — ${date}`);
+  lines.push("");
+  lines.push(`Servings: ${items}   •   Total: ${kcal.toLocaleString()} kcal · ${Math.round(p)}g P · ${Math.round(c)}g C · ${Math.round(f)}g F`);
+  lines.push("");
+  lines.push("MEALS");
+  lines.push(...selected);
+  lines.push("");
+  lines.push("SHOPPING LIST");
+  CAT_ORDER.forEach(cat => {
+    if (!byCat[cat]) return;
+    lines.push("");
+    lines.push(CAT_LABELS[cat].toUpperCase());
+    byCat[cat].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+      lines.push(`☐ ${t.name} — ${fmtQty(t.qty)} ${t.unit}`);
+    });
+  });
+  return lines.join("\n");
+}
+
+function buildExportHTML() {
+  const { totals, kcal, p, c, f, items } = aggregate();
+  if (!items) return "";
+  const today = new Date();
+  const date = today.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  const selected = RECIPES.filter(r => (state[r.id] || 0) > 0)
+    .map(r => `<li>${escapeHtml(r.name)} &times; ${state[r.id]}${r.ai ? " 🌿" : ""}</li>`).join("");
+
+  const byCat = {};
+  Object.values(totals).forEach(t => (byCat[t.cat] = byCat[t.cat] || []).push(t));
+
+  let html = `<h1>Life Alive Shopping List &mdash; ${date}</h1>`;
+  html += `<p><b>Servings:</b> ${items} &nbsp; <b>Total:</b> ${kcal.toLocaleString()} kcal &middot; ${Math.round(p)}g P &middot; ${Math.round(c)}g C &middot; ${Math.round(f)}g F</p>`;
+  html += `<h2>Meals</h2><ul>${selected}</ul>`;
+  html += `<h2>Shopping List</h2>`;
+  CAT_ORDER.forEach(cat => {
+    if (!byCat[cat]) return;
+    html += `<h3>${CAT_LABELS[cat]}</h3><ul>`;
+    byCat[cat].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+      html += `<li>${escapeHtml(t.name)} &mdash; <b>${fmtQty(t.qty)} ${escapeHtml(t.unit)}</b></li>`;
+    });
+    html += `</ul>`;
+  });
+  return html;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function setStatus(msg, kind) {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = "status" + (kind ? " " + kind : "");
+}
+
+// Parse "[id: x-coredata://...]" out of MCP text responses
+function parseNoteId(text) {
+  if (!text) return null;
+  const s = typeof text === "string" ? text : JSON.stringify(text);
+  const m = s.match(/\[id:\s*([^\]]+)\]/);
+  return m ? m[1].trim() : null;
+}
+
+// Extract the actual note body from an MCP tool response. Cowork's callMcpTool
+// returns the MCP-standard envelope { content: [{ type:"text", text:"..."}] };
+// Apple Notes' MCP just stuffs the HTML body into that text field. We must NOT
+// JSON.stringify the response — that previously corrupted the Groceries note
+// with a literal '{"content":[{"type":"text","text":"..."}]}' string.
+function extractMcpText(resp) {
+  if (resp == null) return "";
+  if (typeof resp === "string") return resp;
+  if (resp.content && Array.isArray(resp.content)) {
+    return resp.content.map(c => (c && typeof c.text === "string") ? c.text : "").join("");
+  }
+  if (typeof resp.text === "string") return resp.text;
+  // Last-resort string coercion — never JSON.stringify into the note.
+  return "";
+}
+function extractNoteBody(resp) {
+  const s = extractMcpText(resp);
+  if (!s) return "";
+  // Some servers prefix with metadata lines. If there's a clean blank-line break
+  // very near the top, drop the preamble.
+  const idx = s.indexOf("\n\n");
+  if (idx !== -1 && idx < 200 && /^[A-Z][^<\n]{0,60}:/.test(s.slice(0, idx))) {
+    return s.slice(idx + 2);
+  }
+  return s;
+}
+
+// Build the HTML chunk to append to the Groceries note: a date header followed by
+// one labeled <ul> per category (Produce, Proteins & Legumes, Grains & Breads,
+// Dairy, Pantry) — mirrors the existing Costco/TJs structure so Apple Notes renders
+// each list as a checklist.
+function buildGroceriesAppendHTML() {
+  const { totals, items } = aggregate();
+  if (!items) return "";
+  const dateLabel = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  // Bucket items by category
+  const byCat = {};
+  Object.values(totals).forEach(t => { (byCat[t.cat] = byCat[t.cat] || []).push(t); });
+
+  let html = `<div><br></div>\n<div><b>Life Alive / Clover — ${dateLabel}</b></div>\n`;
+  CAT_ORDER.forEach(cat => {
+    if (!byCat[cat]) return;
+    const sorted = byCat[cat].sort((a, b) => a.name.localeCompare(b.name));
+    html += `<div><b>${escapeHtml(CAT_LABELS[cat])}</b></div>\n<ul>\n`;
+    sorted.forEach(t => {
+      html += `<li>${escapeHtml(t.name)} (${escapeHtml(fmtQty(t.qty))} ${escapeHtml(t.unit)})</li>\n`;
+    });
+    html += `</ul>\n`;
+  });
+  return html;
+}
+
+// Build the plain-text payload that the Apple Shortcut consumes. Format:
+//   First line: "Life Alive / Clover — <date>"
+//   Then for each category, a "### Category" line followed by item lines
+// The Shortcut splits on lines, treats "### " lines as section headers (plain
+// bold text), and converts every other non-empty line into a checklist item.
+function buildShortcutPayload() {
+  const { totals, items } = aggregate();
+  if (!items) return "";
+  const dateLabel = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const byCat = {};
+  Object.values(totals).forEach(t => { (byCat[t.cat] = byCat[t.cat] || []).push(t); });
+
+  const lines = [`# Life Alive / Clover — ${dateLabel}`];
+  CAT_ORDER.forEach(cat => {
+    if (!byCat[cat]) return;
+    lines.push(`### ${CAT_LABELS[cat]}`);
+    byCat[cat].sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+      lines.push(`${t.name} (${fmtQty(t.qty)} ${t.unit})`);
+    });
+  });
+  return lines.join("\n");
+}
+
+// Fire the user's Apple Shortcut, which appends items to the Groceries note
+// as a real checklist. We open the `shortcuts://` URL — on macOS this hands
+// off to the Shortcuts app, which then performs the Notes manipulation in a
+// way that preserves checklist formatting (something the MCP cannot do).
+async function appendToRollingNote() {
+  const payload = buildShortcutPayload();
+  if (!payload) return;
+  const url = "shortcuts://run-shortcut"
+    + "?name=" + encodeURIComponent(SHORTCUT_NAME)
+    + "&input=text"
+    + "&text=" + encodeURIComponent(payload);
+  setStatus("Opening Apple Shortcut \"" + SHORTCUT_NAME + "\" — confirm in Shortcuts if prompted…");
+  try {
+    // Use window.location to trigger the URL handler. On Mac, this launches
+    // Shortcuts.app and runs the named shortcut with the payload as input.
+    window.location.href = url;
+    setTimeout(() => {
+      setStatus("Sent to Shortcut. Check your Groceries note in a moment ✓", "ok");
+    }, 600);
+  } catch (err) {
+    console.error(err);
+    setStatus("Couldn't open Shortcuts URL: " + (err && err.message ? err.message : err), "err");
+  }
+}
+
+function emailToJonah() {
+  const text = buildExportText();
+  if (!text) return;
+  const today = new Date();
+  const dateLabel = today.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const subject = `Life Alive Shopping List — append — ${dateLabel}`;
+  // mailto: bodies are URL-encoded plain text; most clients respect line breaks
+  const url = "mailto:" + encodeURIComponent(JONAH_EMAIL)
+    + "?subject=" + encodeURIComponent(subject)
+    + "&body=" + encodeURIComponent(text + "\n\n— Sent from the Life Alive Meal Picker —");
+  // Open user's mail client. If they don't have one configured, the click no-ops; show fallback.
+  const opened = window.open(url, "_self");
+  setStatus("Opened your email — hit Send to deliver the list. (If nothing happened, use Copy list instead.)", "ok");
+}
+
+async function copyToClipboard() {
+  const text = buildExportText();
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus("Copied to clipboard.", "ok");
+  } catch (e) {
+    setStatus("Clipboard blocked — open the panel and copy manually.", "err");
+  }
+}
+
+async function shareLink() {
+  const hash = encodeStateToHash(state);
+  const url = window.location.origin + window.location.pathname + (hash ? "#" + hash : "");
+  try {
+    await navigator.clipboard.writeText(url);
+    setStatus("Share link copied — paste it anywhere (it works on any computer).", "ok");
+  } catch (e) {
+    // Fallback: show in a prompt so the user can copy manually
+    prompt("Copy this link to share your selections:", url);
+    setStatus("Link ready in the dialog above.", "ok");
+  }
+}
+
+document.getElementById("ai-only").addEventListener("change", e => {
+  aiOnly = e.target.checked; renderGrid();
+});
+document.getElementById("clear-btn").addEventListener("click", () => {
+  if (!confirm("Clear all selected servings?")) return;
+  Object.keys(state).forEach(k => state[k] = 0);
+  // Also clear hash so the page doesn't re-seed selections on next load
+  if (window.location.hash) history.replaceState(null, "", window.location.pathname);
+  saveState(); renderTabs(); renderGrid(); renderPanel();
+});
+document.getElementById("copy-btn").addEventListener("click", copyToClipboard);
+document.getElementById("share-btn").addEventListener("click", shareLink);
+document.getElementById("email-btn").addEventListener("click", emailToJonah);
+document.getElementById("panel-toggle").addEventListener("click", () => {
+  document.getElementById("panel").classList.toggle("open");
+});
+
+// "Send to Groceries (Shortcut)" works on any macOS browser via the `shortcuts://` URL
+// scheme — the Shortcut on Jonah's Mac handles checklist creation. Hide the email
+// button's "primary" emphasis when running inside Cowork (Jonah doesn't need to email
+// himself), but keep the Shortcut button as the primary action everywhere.
+document.getElementById("export-btn").addEventListener("click", appendToRollingNote);
+if (IN_COWORK) {
+  document.getElementById("email-btn").classList.remove("primary");
+}
+
+// Open panel by default if there are existing selections
+if (Object.values(state).some(v => v > 0)) {
+  document.getElementById("panel").classList.add("open");
+}
+
+renderTabs();
+renderGrid();
+renderPanel();
+</script>
+</body>
+</html>
