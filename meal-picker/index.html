@@ -109,6 +109,7 @@
   /* Password gate */
   body.locked .wrap, body.locked .panel { display: none !important; }
   #auth-gate { position: fixed; inset: 0; background: linear-gradient(135deg, #f3f8f5 0%, #e6f3ec 100%); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+  #auth-gate[hidden] { display: none !important; }
   .auth-card { background: #fff; padding: 32px 28px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); text-align: center; max-width: 320px; width: 100%; }
   .auth-emoji { font-size: 40px; margin-bottom: 4px; }
   .auth-card h2 { margin: 0 0 4px; font-size: 20px; color: #1f2a24; }
