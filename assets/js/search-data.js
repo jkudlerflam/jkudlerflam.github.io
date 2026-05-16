@@ -80,7 +80,7 @@ ninja.data = [{
           title: '🚨 New paper on arXiv: Generalized Entropy is von Neumann Entropy II: The...',
           description: "",
           section: "News",},{id: "news-new-paper-on-arxiv-wormholes-and-averaging-over-n-w-edward-witten-we-introduce-mellin-averaging-to-define-an-asymptotic-average-over-n-and-argue-it-may-suffice-to-reproduce-the-apparent-randomness-seen-in-wormhole-physics-we-test-this-against-the-spectral-form-factor-in-the-double-cone-regime-and-describe-toy-models-of-analytic-continuation-in-n",
-          title: 'New paper on arXiv: Wormholes and Averaging over N w/ Edward Witten We...',
+          title: '🚨 New paper on arXiv: Wormholes and Averaging over N w/ Edward Witten....',
           description: "",
           section: "News",},{id: "pages-page-not-found",
           title: 'Page not found',
