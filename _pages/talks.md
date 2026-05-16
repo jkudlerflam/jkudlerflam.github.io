@@ -27,6 +27,19 @@ nav_order: 3
 
 Available recorded talks of mine. Slides of these talks and others (see cv) available upon request.
 
+## Large fluctuations in the large-N limit
+
+- **Date:** May 11, 2026
+- **Event:** Workshop on Double Scaled SYK Model: From Gravity to Many-Body Quantum Chaos - Simons Center for Geometry and Physics
+- **Description:** Based on ([1](https://arxiv.org/abs/2605.15180), [2](https://arxiv.org/abs/2510.06376))
+
+<div class="video-container">
+  <video controls preload="metadata">
+    <source src="https://media.scgp.stonybrook.edu/video/2025/20260511_3_qtp.mp4" type="video/mp4">
+    Your browser does not support the video tag. <a href="https://scgp.stonybrook.edu/video_portal/video.php?id=7631">Watch here</a>.
+  </video>
+</div>
+
 ## Generalized Entropy is von Neumann Entropy
 
 - **Date:** March 17, 2026
