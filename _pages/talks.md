@@ -27,11 +27,11 @@ nav_order: 3
 
 Available recorded talks of mine. Slides of these talks and others (see cv) available upon request.
 
-## Large fluctuations in the large-N limit
+## Wormholes and Averaging over N
 
 - **Date:** May 11, 2026
 - **Event:** Workshop on Double Scaled SYK Model: From Gravity to Many-Body Quantum Chaos - Simons Center for Geometry and Physics
-- **Description:** Based on ([1](https://arxiv.org/abs/2605.15180), [2](https://arxiv.org/abs/2510.06376))
+- **Description:** Based on ([1](https://arxiv.org/abs/2605.15180))
 
 <div class="video-container">
   <video controls preload="metadata">
@@ -54,7 +54,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 - **Date:** March 4, 2026
 - **Event:** LITP Workshop on Quantum Black Holes - University of Michigan
-- **Description:** Based on ([1](https://arxiv.org/abs/2510.06376))
+- **Description:** Based on ([1](https://arxiv.org/abs/2605.15180), [2](https://arxiv.org/abs/2510.06376))
 
 <div class="video-container">
   <video controls preload="metadata">
@@ -79,11 +79,7 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 - **Event:** QIQG 2025: Quantum Information in Quantum Gravity
 - **Description:** Based on ([1](https://arxiv.org/abs/2505.14771))
 
-<div class="video-container">
-  <iframe src="https://pirsa.org/25060010" allowfullscreen></iframe>
-</div>
-
-[Watch on PIRSA](https://pirsa.org/25060010){:target="_blank"}
+[Watch on PIRSA](https://pirsa.org/25060010){:target="_blank"} (external video — Perimeter Institute)
 
 ## Explorations of Dissipative Quantum Chaos from Non-Hermitian Random Matrix Theory
 
