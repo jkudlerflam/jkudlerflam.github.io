@@ -29,6 +29,21 @@ Available recorded talks of mine. Slides of these talks and others (see cv) avai
 
 ## Wormholes and Averaging over N
 
+- **Date:** June 4, 2026
+- **Event:** Joint Theory Seminar - Kavli Institute for Theoretical Physics (KITP)
+- **Description:** Based on ([1](https://arxiv.org/abs/2605.15180))
+
+<div class="video-container">
+  <video controls preload="metadata">
+    <source src="https://kitpcloud.s3-us-west-2.amazonaws.com/joint98/Kudlerflam_TheorySeminar_KITP.mp4" type="video/mp4">
+    Your browser does not support the video tag. <a href="https://online.kitp.ucsb.edu/online/joint98/kudlerflam/rm/jwvideo.html">Watch here</a>.
+  </video>
+</div>
+
+[Watch on KITP](https://online.kitp.ucsb.edu/online/joint98/kudlerflam/rm/jwvideo.html){:target="_blank"}
+
+## Wormholes and Averaging over N
+
 - **Date:** May 11, 2026
 - **Event:** Workshop on Double Scaled SYK Model: From Gravity to Many-Body Quantum Chaos - Simons Center for Geometry and Physics
 - **Description:** Based on ([1](https://arxiv.org/abs/2605.15180))
