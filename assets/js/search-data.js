@@ -75,7 +75,7 @@ ninja.data = [{
           title: '💭 A very brief glimpse into my current headspace has just been released...',
           description: "",
           section: "News",},{id: "news-my-paper-with-vladimir-narovlansky-and-nikita-sopenko-on-optimal-bounds-for-entanglement-at-long-distances-has-been-published-in-physical-review-letters-there-are-limits-to-how-spooky-action-can-be-at-a-distance",
-          title: 'My paper with Vladimir Narovlansky and Nikita Sopenko on optimal bounds for entanglement...',
+          title: '📄 My paper with Vladimir Narovlansky and Nikita Sopenko on optimal bounds for...',
           description: "",
           section: "News",},{id: "news-new-paper-on-arxiv-stringy-algebras-stretched-horizons-and-quantum-connected-wormholes-w-aidan-herderschee-we-studied-how-the-non-locality-of-strings-in-string-theory-leads-to-different-regions-of-spacetime-not-being-independent-this-led-us-to-understand-precise-notions-of-stretched-horizons-and-intrinsically-stringy-er-epr",
           title: '🚨 New paper on arXiv: Stringy algebras, stretched horizons, and quantum-connected wormholes w/...',
