@@ -34,8 +34,8 @@ My research is broadly in quantum field theory, quantum gravity, and many-body q
 2. How does thermal physics emerge from underlying quantum degrees of freedom and chaotic dynamics?
 
 The surprising connection between these seemingly disparate research areas has always captivated me and continues to inspire my work. I talk about this connection in more detail on [The Postdoc Path Podcast](https://open.spotify.com/episode/05Rix9sNXoEcO8PwDhadbg) and in much greater depth in my [publications]({{ '/publications/' | relative_url }}).  
-If you're a student interested in theoretical physics, I’m always happy to chat—please feel free to reach out to me at [jkudlerflam@ias.edu](mailto:jkudlerflam@ias.edu).
+If you're a student interested in theoretical physics, I’m always happy to chat, so please feel free to reach out to me at [jkudlerflam@ias.edu](mailto:jkudlerflam@ias.edu).
 
-Beyond research, I’m passionate about teaching and mentorship. Since 2023, I’ve been volunteering with Princeton University’s Prison Teaching Initiative, teaching undergraduate courses to incarcerated students across New Jersey. If you’re interested in getting involved, you can learn more [here](https://mcgraw.princeton.edu/community-college-engagement/prison-teaching-initiative)—or contact me if you’d like to hear more about my experience.
+Beyond research, I’m passionate about teaching and mentorship. Since 2023, I’ve been volunteering with Princeton University’s Prison Teaching Initiative, teaching undergraduate courses to incarcerated students across New Jersey. If you’re interested in getting involved, you can learn more [here](https://mcgraw.princeton.edu/community-college-engagement/prison-teaching-initiative), or contact me if you’d like to hear more about my experience.
 
 
