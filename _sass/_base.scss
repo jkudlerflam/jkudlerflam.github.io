@@ -730,6 +730,10 @@ footer.sticky-bottom {
       margin-bottom: 1rem;
 
       .preview {
+        width: auto;
+        max-width: 100%;
+        max-height: 9rem;
+        object-fit: contain;
       }
 
       .abbr {
