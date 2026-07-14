@@ -1190,6 +1190,12 @@ ninja-keys::part(ninja-input-wrapper) {
   background: var(--global-bg-color);
 }
 
+// keep news announcement teaser images from rendering too tall (aspect preserved)
+.news img {
+  width: auto !important;
+  max-height: 8rem;
+}
+
 // newsletter
 .newsletter-form-container {
   margin-bottom: 20px;
