@@ -16,6 +16,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/publications/";
           },
+        },{id: "nav-news",
+          title: "news",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/news/";
+          },
         },{id: "nav-recorded-talks",
           title: "recorded talks",
           description: "",
@@ -79,11 +86,17 @@ ninja.data = [{
           section: "News",},{id: "news-new-paper-on-arxiv-generalized-entropy-is-von-neumann-entropy-ii-the-complete-symmetry-group-and-edge-modes-w-marc-klinger-and-gautam-satishchandran-we-show-that-gravitational-backreaction-perturbs-the-horizon-area-in-an-angle-dependent-way-encoded-in-edge-modes-related-to-an-infinite-dimensional-boost-supertranslation-symmetry-the-resulting-algebra-of-observables-is-type-ii-and-the-entropy-of-any-semiclassical-state-is-the-generalized-entropy-with-an-additional-edge-mode-contribution",
           title: '🚨 New paper on arXiv: Generalized Entropy is von Neumann Entropy II: The...',
           description: "",
+          section: "News",},{id: "news-congratulations-to-hyaline-chen-whom-i-had-the-pleasure-of-advising-at-princeton-for-moving-on-to-graduate-school-he-is-completing-the-physics-master-s-psi-program-at-the-perimeter-institute-and-will-continue-on-to-his-phd-at-harvard-very-well-deserved",
+          title: 'Congratulations to Hyaline Chen, whom I had the pleasure of advising at Princeton,...',
+          description: "",
           section: "News",},{id: "news-new-paper-on-arxiv-wormholes-and-averaging-over-n-w-edward-witten-we-introduce-mellin-averaging-to-define-an-asymptotic-average-over-n-and-argue-it-may-suffice-to-reproduce-the-apparent-randomness-seen-in-wormhole-physics-we-test-this-against-the-spectral-form-factor-in-the-double-cone-regime-and-describe-toy-models-of-analytic-continuation-in-n",
           title: '🚨 New paper on arXiv: Wormholes and Averaging over N w/ Edward Witten....',
           description: "",
           section: "News",},{id: "news-new-paper-on-arxiv-logarithmic-negativity-typically-equals-exact-entanglement-cost-w-bowen-ouyang-for-random-induced-mixed-states-we-show-that-the-logarithmic-negativity-an-efficiently-computable-entanglement-measure-generically-coincides-with-the-exact-entanglement-cost-under-ppt-preserving-operations-giving-it-a-clean-operational-meaning",
           title: '🚨 New paper on arXiv: Logarithmic negativity typically equals exact entanglement cost w/...',
+          description: "",
+          section: "News",},{id: "news-congratulations-to-bowen-ouyang-who-is-heading-to-brandeis-university-to-begin-his-physics-phd-it-was-a-pleasure-working-with-him-see-our-recent-paper-on-logarithmic-negativity-and-the-exact-entanglement-cost",
+          title: 'Congratulations to Bowen Ouyang, who is heading to Brandeis University to begin his...',
           description: "",
           section: "News",},{id: "pages-page-not-found",
           title: 'Page not found',
@@ -128,13 +141,6 @@ ninja.data = [{
         section: 'Socials',
         handler: () => {
           window.open("https://inspirehep.net/authors/1626495", "_blank");
-        },
-      },{
-        id: 'social-rss',
-        title: 'RSS Feed',
-        section: 'Socials',
-        handler: () => {
-          window.open("/feed.xml", "_blank");
         },
       },{
         id: 'social-scholar',
