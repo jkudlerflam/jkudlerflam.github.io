@@ -32,7 +32,7 @@ ninja.data = [{
           },
         },{id: "nav-cv",
           title: "cv",
-          description: "CV Updated 5/16/26",
+          description: "CV Updated 8/14/26",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
@@ -110,7 +110,7 @@ ninja.data = [{
               window.location.href = "/";
             },},{id: "pages-cv",
           title: 'cv',
-          description: "CV Updated 5/16/26",
+          description: "CV Updated 8/14/26",
           section: "Pages",handler: () => {
               window.location.href = "/cv/";
             },},{id: "pages-news",
