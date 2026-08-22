@@ -10,3 +10,14 @@ _posts/2015-10-20-math.md
 _sass/font-awesome/*.scss
 _sass/tabler-icons/*.scss
 _scripts/*
+
+# resume.json is intentionally not valid JSON. Making it parse would populate
+# site.data.resume, and _layouts/cv.liquid branches on that, which would replace
+# the /cv/ PDF download page with a rendered JSON-Resume built from stale data.
+# Excluded so `prettier --check` passes without changing what /cv/ renders.
+assets/json/resume.json
+
+# Kramdown inline attribute lists ({:target="_blank"}) are not CommonMark.
+# Prettier escapes the underscore to \_blank, which breaks the rendered
+# attribute. Excluded so the recording links keep working.
+_pages/talks.md
