@@ -11,6 +11,7 @@ profile:
     <p>267 Bloomberg Hall</p>
     <p>1 Einstein Drive</p>
     <p>Princeton, NJ 08540</p>
+    <span class="photo-credit">Photo: Maria O’Leary / Institute for Advanced Study</span>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
