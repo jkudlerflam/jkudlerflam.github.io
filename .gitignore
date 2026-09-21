@@ -11,3 +11,8 @@ assets/libs/
 node_modules/
 vendor
 .idea
+# workspace operational notes — must never reach this public repo
+STATE.md
+CLAUDE.md
+paper_notes/
+website-update/
